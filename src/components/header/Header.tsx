@@ -1,5 +1,5 @@
 import "./Header.scss";
-import waldoIcon from "../../assets/waldo-icon.png";
+import waldoIcon from "../../assets/characters/waldo-icon.png";
 
 function Header() {
   const PageTitle = (

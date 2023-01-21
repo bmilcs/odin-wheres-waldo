@@ -63,14 +63,18 @@ body {
   font-family: var(--ff-main);
   font-weight: var(--fw-reg);
   color: var(--clr-neutral-900);
-}
-
-main {
+  background: var(--clr-neutral-200);
 }
 
 .column {
   max-width: 1280px;
+
+  padding-inline: 0.5rem;
   margin-inline: auto;
+}
+
+.app {
+  min-height: 100vh;
 }
 
 // -----------------------------------------------------

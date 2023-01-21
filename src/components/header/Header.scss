@@ -9,11 +9,10 @@ header {
 
   .column {
     display: grid;
-    grid-template-columns: max-content min-content;
     align-items: center;
     justify-content: space-between;
 
-    margin-inline: 0.5rem;
+    grid-template-columns: max-content min-content;
   }
 }
 

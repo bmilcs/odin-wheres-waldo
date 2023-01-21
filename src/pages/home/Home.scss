@@ -1,0 +1,10 @@
+.home__title {
+  font-size: 3rem;
+  margin-inline: auto;
+}
+
+.home__container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
+  gap: 1rem;
+}
