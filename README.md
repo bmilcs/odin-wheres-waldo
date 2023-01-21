@@ -20,7 +20,9 @@ In progress...
 
 ## Screenshots
 
-In progress...
+> Figma Assets
+
+![Figma Where's Waldo Assets](./screenshots/figma-assets.png)
 
 ## Links
 
