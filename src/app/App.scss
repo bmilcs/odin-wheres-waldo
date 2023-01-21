@@ -1,0 +1,94 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Roboto:wght@400;700&display=swap");
+
+// -----------------------------------------------------
+// global / app styles
+// -----------------------------------------------------
+
+:root {
+  --ff-main: "Roboto", sans-serif;
+  --ff-accent: "Roboto Slab", serif;
+
+  --fw-reg: 400;
+  --fw-bold: 700;
+
+  --clr-neutral-900: #1a1423;
+  --clr-neutral-200: #eacdc2;
+  --clr-accent-800: #372549;
+  --clr-accent-600: #774c60;
+  --clr-accent-400: #b75d69;
+
+  --border-radius: 8px;
+  --box-shadow-200: rgba(0, 0, 0, 0.19) 0px 10px 20px,
+    rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  --box-shadow-100: rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+body {
+  font-family: var(--ff-main);
+  font-weight: var(--fw-reg);
+  color: var(--clr-neutral-900);
+}
+
+.content {
+  max-width: 1920px;
+}
+
+// -----------------------------------------------------
+// css reset: josh w. comeau
+// https://www.joshwcomeau.com/css/custom-css-reset/
+// -----------------------------------------------------
+
+// 1. Use a more-intuitive box-sizing model.
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+// 2. Remove default margin
+* {
+  margin: 0;
+}
+// 3. Allow percentage-based heights in the application
+html,
+body {
+  height: 100%;
+}
+// Typographic tweaks!
+// 4. Add accessible line-height
+// 5. Improve text rendering
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+// 6. Improve media defaults
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+// 7. Remove built-in form typography styles
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+// 8. Avoid text overflows
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+// 9. Create a root stacking context
+#root,
+#__next {
+  isolation: isolate;
+}

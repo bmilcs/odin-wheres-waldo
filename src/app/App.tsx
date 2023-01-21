@@ -1,7 +1,10 @@
+import Header from "../components/header/Header";
+import "./App.scss";
+
 function App() {
   return (
     <main className="app">
-      <h1>where's waldo</h1>
+      <Header />
     </main>
   );
 }
