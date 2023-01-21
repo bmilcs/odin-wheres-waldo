@@ -3,7 +3,7 @@ import "./App.scss";
 
 function App() {
   return (
-    <main className="app">
+    <main>
       <Header />
     </main>
   );
