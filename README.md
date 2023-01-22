@@ -13,6 +13,7 @@ Welcome to Bryan Miller's Where's Waldo Project, the [twenty secondth assignment
   - Firestore Database
   - User Authentication
 - SASS
+  - BEM naming convention
 
 ## Summary
 
