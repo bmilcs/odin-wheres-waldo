@@ -3,7 +3,7 @@
     font-family: var(--ff-accent);
     color: var(--clr-primary-800);
 
-    margin-block: 1.5rem;
+    margin-block: 2.5rem;
     font-size: 3rem;
     margin-inline: auto;
     text-align: center;
@@ -12,6 +12,6 @@
   &__card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
-    gap: 1rem;
+    gap: 1.5rem;
   }
 }

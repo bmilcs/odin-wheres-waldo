@@ -9,10 +9,10 @@
 
   &__details {
     display: grid;
-    grid-template-rows: min-content 1fr min-content;
-    gap: 1rem;
+    grid-template-rows: min-content 1fr min-content min-content;
+    gap: 1.5rem;
 
-    padding: 1rem;
+    padding: 1.75rem;
   }
 
   &__name {
