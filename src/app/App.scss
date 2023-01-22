@@ -48,15 +48,21 @@
   --clr-accent-800: #664a1d;
   --clr-accent-900: #33250f;
 
-  --border-radius: 8px;
+  --border-radius-100: 4px;
+  --border-radius-200: 8px;
+  --border-radius-500: 50vh;
+
   --box-shadow-200: rgba(0, 0, 0, 0.19) 0px 10px 20px,
     rgba(0, 0, 0, 0.23) 0px 6px 6px;
   --box-shadow-100: rgba(0, 0, 0, 0.16) 0px 3px 6px,
     rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
   --text-shadow-100: 2px 3px 5px rgba(0, 0, 0, 0.5);
   --text-shadow-200: 5px 5px 0px rgba(0, 0, 0, 0.2);
   --text-shadow-300: 0px 4px 3px rgba(0, 0, 0, 0.4),
     0px 8px 13px rgba(0, 0, 0, 0.1), 0px 18px 23px rgba(0, 0, 0, 0.1);
+
+  --transition-100: 0.15s all ease-in-out;
 }
 
 body {
@@ -68,13 +74,19 @@ body {
 
 .column {
   max-width: 1280px;
-
+  min-height: 100%;
   padding-inline: 0.5rem;
   margin-inline: auto;
 }
 
 .app {
+  display: grid;
+  grid-template-rows: min-content 1fr;
   min-height: 100vh;
+}
+
+main {
+  min-height: 100%;
 }
 
 // -----------------------------------------------------
@@ -129,9 +141,10 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
+  line-height: 1;
 }
-// 9. Create a root stacking context
-#root,
-#__next {
-  isolation: isolate;
-}
+// // 9. Create a root stacking context
+// #root,
+// #__next {
+//   isolation: isolate;
+// }

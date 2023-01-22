@@ -1,10 +1,17 @@
-.home__title {
-  font-size: 3rem;
-  margin-inline: auto;
-}
+.home {
+  &__title {
+    font-family: var(--ff-accent);
+    color: var(--clr-primary-800);
 
-.home__container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
-  gap: 1rem;
+    margin-block: 1.5rem;
+    font-size: 3rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(375px, 1fr));
+    gap: 1rem;
+  }
 }

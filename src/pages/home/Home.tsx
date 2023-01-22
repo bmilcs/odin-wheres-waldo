@@ -5,9 +5,9 @@ import "./Home.scss";
 
 function Home() {
   return (
-    <div className="column">
+    <div className="column home">
       <h2 className="home__title">Choose Your Adventure:</h2>
-      <div className="home__container">
+      <div className="home__card-grid">
         {MAP_DATA.map((map) => (
           <MapCard {...map} key={map.name} />
         ))}

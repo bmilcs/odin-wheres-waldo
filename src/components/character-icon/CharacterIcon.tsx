@@ -5,7 +5,7 @@ interface CharacterProps {
   name: String;
 }
 
-function CharacterIcon({ name }: CharacterProps) {
+function CharacterIcon({ name, ...props }: CharacterProps) {
   const character = CHARACTER_DATA.find((character) => character.name === name);
 
   return (
@@ -13,6 +13,7 @@ function CharacterIcon({ name }: CharacterProps) {
       src={character?.icon}
       alt={character?.name}
       className="character__icon"
+      {...props}
     />
   );
 }
