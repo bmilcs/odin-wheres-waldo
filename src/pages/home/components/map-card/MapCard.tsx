@@ -1,16 +1,10 @@
-import CharacterIcon from "../character-icon/CharacterIcon";
+import CharacterIcon from "../../../../components/character-icon/CharacterIcon";
 import uniqid from "uniqid";
 import "./MapCard.scss";
-import Button from "../button/Button";
+import PlayMapButton from "../play-map-button/PlayMapButton";
+import { MapObject } from "../../../../data/mapData";
 
-interface MapCardProps {
-  name: string;
-  preview: any;
-  description: string;
-  characters: Array<string>;
-}
-
-function MapCard({ name, preview, description, characters }: MapCardProps) {
+function MapCard({ name, preview, description, characters, id }: MapObject) {
   return (
     <article className="card">
       <img src={preview} alt={`Map of ${name}`} className="card__img" />
@@ -19,11 +13,11 @@ function MapCard({ name, preview, description, characters }: MapCardProps) {
         <p className="card__description">{description}</p>
         <div className="card__characters__container">
           <h5 className="card__characters__header">Find them all:</h5>
-          {characters.map((character) => (
-            <CharacterIcon name={character} key={uniqid()} />
+          {characters.map((name) => (
+            <CharacterIcon name={name} key={uniqid()} />
           ))}
         </div>
-        <Button>Play Now</Button>
+        <PlayMapButton url={`/map/${id}`}>Play Now</PlayMapButton>
       </div>
     </article>
   );

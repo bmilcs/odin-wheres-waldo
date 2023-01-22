@@ -1,11 +1,11 @@
 import "./CharacterIcon.scss";
 import { CHARACTER_DATA } from "../../data/characterData";
 
-interface CharacterProps {
-  name: String;
+interface Props {
+  name: string;
 }
 
-function CharacterIcon({ name, ...props }: CharacterProps) {
+function CharacterIcon({ name }: Props) {
   const character = CHARACTER_DATA.find((character) => character.name === name);
 
   return (
@@ -13,7 +13,6 @@ function CharacterIcon({ name, ...props }: CharacterProps) {
       src={character?.icon}
       alt={character?.name}
       className="character__icon"
-      {...props}
     />
   );
 }

@@ -37,3 +37,11 @@ export const CHARACTER_DATA: CharacterArray = [
     fullSize: odlawFullSize,
   },
 ];
+
+export const getCharacterDetails = (names: string[]) => {
+  return names.map((name) => {
+    return CHARACTER_DATA.find((character) => character.name === name);
+  });
+};
+
+export type { CharacterArray, CharacterObject };

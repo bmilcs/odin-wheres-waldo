@@ -1,5 +1,5 @@
 import React from "react";
-import MapCard from "../../components/map-card/MapCard";
+import MapCard from "./components/map-card/MapCard";
 import { MAP_DATA } from "../../data/mapData";
 import "./Home.scss";
 

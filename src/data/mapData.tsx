@@ -11,12 +11,14 @@ interface MapObject {
   preview: any;
   fullSize: any;
   description: string;
+  id: string;
 }
 
 interface MapArray extends Array<MapObject> {}
 
 export const MAP_DATA: MapArray = [
   {
+    id: "hollywood",
     name: "Hollywood, USA",
     characters: ["waldo", "wilma", "wizard", "odlaw"],
     description:
@@ -25,6 +27,7 @@ export const MAP_DATA: MapArray = [
     fullSize: hollywoodFullsize,
   },
   {
+    id: "andes",
     name: "Andes Mountains, Chile",
     characters: ["waldo", "wilma", "wizard", "odlaw"],
     description:
@@ -33,6 +36,7 @@ export const MAP_DATA: MapArray = [
     fullSize: slopesFullSize,
   },
   {
+    id: "moon",
     name: "Picard Crater, the Moon",
     characters: ["waldo", "wilma", "wizard", "odlaw"],
     description:
@@ -41,3 +45,5 @@ export const MAP_DATA: MapArray = [
     fullSize: spaceFullSize,
   },
 ];
+
+export type { MapArray, MapObject };
