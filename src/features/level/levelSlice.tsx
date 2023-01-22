@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface LevelState {
-  name: string | null;
+  id: string | null;
   characters: {
-    all: {
+    remaining: {
       names: Array<string>;
       count: number;
     };
@@ -18,9 +18,9 @@ interface LevelState {
 }
 
 const initialState: LevelState = {
-  name: null,
+  id: null,
   characters: {
-    all: {
+    remaining: {
       names: [],
       count: 0,
     },
@@ -35,12 +35,15 @@ const initialState: LevelState = {
 };
 
 export const levelSlice = createSlice({
-  name: "level",
+  name: "levels",
   initialState: initialState,
   reducers: {
-    addCharacter: (state, action) => {
-      state.characters.all.names.push(action.payload);
-      state.characters.all.count += 1;
+    setLevelID: (state, { payload }) => {
+      state.id = payload;
+    },
+    addCharacter: (state, { payload }) => {
+      state.characters.remaining.names = payload;
+      state.characters.remaining.count = payload.length;
     },
     clearCoordinates: (state) => {
       state.clickedCoordinates = null;
@@ -51,6 +54,11 @@ export const levelSlice = createSlice({
   },
 });
 
-export const { addCharacter } = levelSlice.actions;
+export const {
+  setLevelID,
+  addCharacter,
+  clearCoordinates,
+  clearSelectedCharacter,
+} = levelSlice.actions;
 
 export default levelSlice.reducer;

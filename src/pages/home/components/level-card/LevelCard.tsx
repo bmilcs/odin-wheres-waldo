@@ -1,13 +1,19 @@
 import CharacterIcon from "../../../../components/character-icon/CharacterIcon";
 import uniqid from "uniqid";
-import "./MapCard.scss";
-import PlayMapButton from "../play-map-button/PlayMapButton";
-import { MapObject } from "../../../../data/mapData";
+import "./LevelCard.scss";
+import PlayLevelButton from "../play-level-button/PlayLevelButton";
+import { LevelObject } from "../../../../data/levelData";
 
-function MapCard({ name, preview, description, characters, id }: MapObject) {
+function LevelCard({
+  name,
+  preview,
+  description,
+  characters,
+  id,
+}: LevelObject) {
   return (
     <article className="card">
-      <img src={preview} alt={`Map of ${name}`} className="card__img" />
+      <img src={preview} alt={`Level of ${name}`} className="card__img" />
       <div className="card__details">
         <h4 className="card__name">{name}</h4>
         <p className="card__description">{description}</p>
@@ -17,10 +23,10 @@ function MapCard({ name, preview, description, characters, id }: MapObject) {
             <CharacterIcon name={name} key={uniqid()} />
           ))}
         </div>
-        <PlayMapButton url={`/map/${id}`}>Play Now</PlayMapButton>
+        <PlayLevelButton url={`/level/${id}`}>Play Now</PlayLevelButton>
       </div>
     </article>
   );
 }
 
-export default MapCard;
+export default LevelCard;

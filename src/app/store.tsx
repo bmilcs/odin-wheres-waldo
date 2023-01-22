@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import levelsReducer from "../features/map/mapSlice";
+import levelsReducer from "../features/level/levelSlice";
 
 export const store = configureStore({
   reducer: {

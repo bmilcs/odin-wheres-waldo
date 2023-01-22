@@ -1,11 +1,11 @@
-import hollywoodPreview from "../assets/maps/hollywood-preview.png";
-import hollywoodFullsize from "../assets/maps/hollywood.jpg";
-import slopesPreview from "../assets/maps/slopes-preview.png";
-import slopesFullSize from "../assets/maps/slopes.jpg";
-import spacePreview from "../assets/maps/space-preview.png";
-import spaceFullSize from "../assets/maps/space.jpg";
+import hollywoodPreview from "../assets/levels/hollywood-preview.png";
+import hollywoodFullsize from "../assets/levels/hollywood.jpg";
+import slopesPreview from "../assets/levels/slopes-preview.png";
+import slopesFullSize from "../assets/levels/slopes.jpg";
+import spacePreview from "../assets/levels/space-preview.png";
+import spaceFullSize from "../assets/levels/space.jpg";
 
-interface MapObject {
+interface LevelObject {
   name: string;
   characters: Array<string>;
   preview: any;
@@ -14,9 +14,9 @@ interface MapObject {
   id: string;
 }
 
-interface MapArray extends Array<MapObject> {}
+interface LevelArray extends Array<LevelObject> {}
 
-export const MAP_DATA: MapArray = [
+export const LEVEL_DATA: LevelArray = [
   {
     id: "hollywood",
     name: "Hollywood, USA",
@@ -46,4 +46,4 @@ export const MAP_DATA: MapArray = [
   },
 ];
 
-export type { MapArray, MapObject };
+export type { LevelArray, LevelObject };

@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import Header from "../components/header/Header";
 import Home from "../pages/home/Home";
-import Map from "../pages/map/Map";
-import { MAP_DATA, MapObject } from "../data/mapData";
+import Level from "../pages/level/Level";
+import { LEVEL_DATA, LevelObject } from "../data/levelData";
 import "./App.scss";
 
 function App() {
@@ -12,12 +12,12 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          {MAP_DATA.map((map: MapObject) => {
+          {LEVEL_DATA.map((level: LevelObject) => {
             return (
               <Route
-                key={map.id}
-                path={`/map/${map.id}`}
-                element={<Map {...map} />}
+                key={level.id}
+                path={`/level/${level.id}`}
+                element={<Level {...level} />}
               />
             );
           })}
