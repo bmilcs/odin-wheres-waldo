@@ -1,0 +1,13 @@
+.gameplay {
+  position: relative;
+  object-fit: cover;
+  margin: auto;
+
+  &__zoom {
+    position: absolute;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+}
