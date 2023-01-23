@@ -23,7 +23,7 @@ function Level({
   useEffect(() => {
     dispatch(setLevelID(name));
     dispatch(addCharacter(characters));
-  }, [characters]);
+  }, []);
 
   return (
     <>
