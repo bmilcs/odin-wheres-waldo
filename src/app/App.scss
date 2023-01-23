@@ -143,8 +143,8 @@ h6 {
   overflow-wrap: break-word;
   line-height: 1;
 }
-// // 9. Create a root stacking context
-// #root,
-// #__next {
-//   isolation: isolate;
-// }
+// 9. Create a root stacking context
+#root,
+#__next {
+  isolation: isolate;
+}
