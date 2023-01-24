@@ -21,7 +21,7 @@ function Level({
   // on first render, initialize state values in level slice
   // with level data passed in from props
   useEffect(() => {
-    dispatch(setLevelID(name));
+    dispatch(setLevelID(id));
     dispatch(addCharacter(characters));
   }, []);
 

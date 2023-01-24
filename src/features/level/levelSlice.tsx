@@ -45,6 +45,13 @@ export const levelSlice = createSlice({
       state.characters.remaining.names = payload;
       state.characters.remaining.count = payload.length;
     },
+    setCharacterSelection: (state, { payload }) => {
+      state.selectedCharacter = payload;
+    },
+    setClickedCoordinates: (state, { payload }) => {
+      console.log("payload", payload);
+      state.clickedCoordinates = payload;
+    },
     clearCoordinates: (state) => {
       state.clickedCoordinates = null;
     },
@@ -57,6 +64,8 @@ export const levelSlice = createSlice({
 export const {
   setLevelID,
   addCharacter,
+  setClickedCoordinates,
+  setCharacterSelection,
   clearCoordinates,
   clearSelectedCharacter,
 } = levelSlice.actions;
