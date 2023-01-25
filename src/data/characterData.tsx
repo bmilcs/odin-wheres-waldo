@@ -13,9 +13,7 @@ interface CharacterObject {
   fullSize: any;
 }
 
-interface CharacterArray extends Array<CharacterObject> {}
-
-export const CHARACTER_DATA: CharacterArray = [
+export const CHARACTER_DATA: Array<CharacterObject> = [
   {
     name: "wilma",
     icon: willmaIcon,
@@ -44,4 +42,4 @@ export const getCharacterDetails = (names: string[]) => {
   });
 };
 
-export type { CharacterArray, CharacterObject };
+export type { CharacterObject };

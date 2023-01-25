@@ -9,6 +9,45 @@
     background-repeat: no-repeat;
     border-radius: 50%;
     overflow: hidden;
-    border: 3px solid var(--clr-accent-900);
+    border: 5px solid var(--clr-accent-500);
+  }
+}
+
+.menu {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  background: var(--clr-accent-400);
+  border: 3px solid var(--clr-accent-500);
+  border-radius: var(--border-radius-200);
+
+  &__character {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+
+    border-radius: var(--border-radius-200);
+
+    padding-right: 0.25rem;
+
+    &:hover {
+      background: var(--clr-accent-600);
+      color: var(--clr-neutral-100);
+    }
+  }
+
+  &__name {
+    pointer-events: none;
+    text-transform: uppercase;
+  }
+
+  &__icon {
+    pointer-events: none;
+    width: 40px;
+    border-radius: var(--border-radius-200);
+    border: 3px solid var(--clr-accent-500);
   }
 }
