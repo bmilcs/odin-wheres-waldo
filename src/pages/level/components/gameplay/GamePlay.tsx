@@ -25,9 +25,10 @@ function GamePlay({ image }: Props) {
   const zoomLevel = 2;
 
   const handleClick = (e: React.MouseEvent): void => {
-    if (!isMenuOpen) {
-      showMenu();
-      hideMagnifier();
+    if (isMenuOpen) {
+      hideMenu();
+      dispatch(setClickedCoordinates(null));
+      return;
     }
 
     // update state levelSlice w/ coordinates
@@ -36,6 +37,7 @@ function GamePlay({ image }: Props) {
       ((y / imgHeight) * 100).toFixed(3),
     ];
     dispatch(setClickedCoordinates(coordinatePercentages));
+    showMenu();
   };
 
   const handleMouseEnter = (e: React.MouseEvent): void => {
@@ -58,6 +60,11 @@ function GamePlay({ image }: Props) {
     setXY([x, y]);
   };
 
+  const handleMouseLeave = (): void => {
+    if (isMenuOpen) return;
+    hideMagnifier();
+  };
+
   return (
     <div className="gameplay">
       {/* main level image */}
@@ -65,7 +72,7 @@ function GamePlay({ image }: Props) {
         src={image}
         onMouseEnter={(e) => handleMouseEnter(e)}
         onMouseMove={(e) => handleMouseMove(e)}
-        onMouseLeave={() => hideMagnifier()}
+        onMouseLeave={() => handleMouseLeave()}
         onClick={(e) => handleClick(e)}
         alt={"Wheres Waldo Level"}
       />
