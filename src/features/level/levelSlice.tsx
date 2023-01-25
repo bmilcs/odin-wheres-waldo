@@ -49,7 +49,6 @@ export const levelSlice = createSlice({
       state.selectedCharacter = payload;
     },
     setClickedCoordinates: (state, { payload }) => {
-      console.log("payload", payload);
       state.clickedCoordinates = payload;
     },
     clearCoordinates: (state) => {
