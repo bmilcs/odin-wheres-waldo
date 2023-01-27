@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyABzNK-oeIQdF0ZrqZGxca9avUGzMNUXmw",
@@ -10,3 +11,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const functions = getFunctions(app);
+
+export const validateCharacterPosition = httpsCallable(
+  functions,
+  "validateCharacterPosition"
+);

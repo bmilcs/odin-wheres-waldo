@@ -4,19 +4,25 @@ import levelSlice, {
   setCharacterSelection,
   setClickedCoordinates,
 } from "../../../../features/level/levelSlice";
-import { CharacterObject } from "../../../../data/characterData";
+import { validateCharacterPosition } from "../../../../firebase/firebase";
+import {
+  CharacterObject,
+  getCharacterDetails,
+} from "../../../../data/characterData";
 import "./GamePlay.scss";
 import useToggle from "../../../../hooks/useToggle";
+import { LevelObject } from "../../../../data/levelData";
 
 // zoom image source: Anxiny article on dev.to
 // https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
 
 interface Props {
   image: string;
+  validatePosition(characterName: string | null, coordinates: number[]): void;
   characterData: Array<CharacterObject | undefined>;
 }
 
-function GamePlay({ image, characterData }: Props) {
+function GamePlay({ validatePosition, image, characterData }: Props) {
   const dispatch = useDispatch();
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
@@ -44,7 +50,6 @@ function GamePlay({ image, characterData }: Props) {
 
     const coordinates = getCoordinatesInPercentages();
     dispatch(setClickedCoordinates(coordinates));
-    // coordinates[1] < 50 ? (menuDirection = "down") : (menuDirection = "up");
     showMenu();
   };
 
@@ -54,6 +59,7 @@ function GamePlay({ image, characterData }: Props) {
     dispatch(setCharacterSelection(characterName));
     hideMenu();
     setDisableMagnifier(true);
+    validatePosition(characterName, getCoordinatesInPercentages());
   };
 
   const handleMouseEnter = (e: React.MouseEvent): void => {
