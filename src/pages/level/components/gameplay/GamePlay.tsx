@@ -6,6 +6,7 @@ import {
   setClickedCoordinates,
   moveCharacterToFoundArray,
   updateCharacterCounts,
+  addCoordinatesToFoundArray,
 } from "../../../../features/level/levelSlice";
 import { CharacterObject } from "../../../../data/characterData";
 import "./GamePlay.scss";
@@ -36,6 +37,9 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const foundCharacters = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.found.names
   );
+  const foundCharacterCoordinates = useSelector(
+    (state: { levels: LevelState }) => state.levels.characters.found.coordinates
+  );
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
   const [isMagnifierOpen, , showMagnifier, hideMagnifier] = useToggle(false);
@@ -60,6 +64,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         if (isFound) {
           dispatch(moveCharacterToFoundArray(character));
           dispatch(updateCharacterCounts());
+          dispatch(addCoordinatesToFoundArray(coordinates));
         }
       })
       .catch((e) => console.log(e));
@@ -120,6 +125,14 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     return [
       Number(((magnifierX / imgWidth) * 100).toFixed(3)),
       Number(((magnifierY / imgHeight) * 100).toFixed(3)),
+    ];
+  };
+
+  const getCoordinatesInPixels = (coordsInPercentage: number[]): number[] => {
+    const [percentX, percentY] = coordsInPercentage;
+    return [
+      Number(((percentX * imgWidth) / 100).toFixed(3)),
+      Number(((percentY * imgWidth) / 100).toFixed(3)),
     ];
   };
 
@@ -197,6 +210,29 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             })}
         </div>
       )}
+
+      {/* draw circles around found characters
+      {foundCharacterCoordinates &&
+        foundCharacterCoordinates.map((coord) => {
+          if (!coord) return null;
+          console.log(
+            "getCoordinatesInPixels(coord)",
+            getCoordinatesInPixels(coord)
+          );
+          const [foundX, foundY] = getCoordinatesInPixels(coord);
+          console.log("imgWidth", imgWidth);
+
+          return (
+            <div
+              key={foundX}
+              className="character__found"
+              style={{
+                top: `${foundY}px`,
+                left: `${foundX}px`,
+              }}
+            ></div>
+          );
+        })} */}
     </div>
   );
 };

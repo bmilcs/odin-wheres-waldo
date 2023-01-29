@@ -23,7 +23,7 @@ function Level(props: LevelObject) {
 
   return (
     <>
-      <LevelHeader />
+      <LevelHeader characterData={characterData} />
       <GamePlay id={id} image={fullSize} characterData={characterData} />
     </>
   );

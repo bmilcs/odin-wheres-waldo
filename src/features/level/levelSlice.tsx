@@ -10,6 +10,7 @@ export interface LevelState {
     found: {
       names: Array<string>;
       count: number;
+      coordinates: number[][];
     };
   };
   timer: number;
@@ -25,6 +26,7 @@ const initialState: LevelState = {
     },
     found: {
       names: [],
+      coordinates: [],
       count: 0,
     },
   },
@@ -51,6 +53,9 @@ export const levelSlice = createSlice({
       // add it to found names
       state.characters.found.names.push(character);
     },
+    addCoordinatesToFoundArray: (state, { payload }) => {
+      state.characters.found.coordinates.push(payload);
+    },
     setClickedCoordinates: (state, { payload }) => {
       state.clickedCoordinates = payload;
     },
@@ -72,6 +77,7 @@ export const {
   moveCharacterToFoundArray,
   clearCoordinates,
   updateCharacterCounts,
+  addCoordinatesToFoundArray,
 } = levelSlice.actions;
 
 export default levelSlice.reducer;
