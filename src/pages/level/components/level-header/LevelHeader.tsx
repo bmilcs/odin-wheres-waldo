@@ -38,6 +38,9 @@ function LevelHeader({ characterData }: Props) {
             );
           })}
         </div>
+
+        {/* exit level button */}
+        <LinkButton url="/">Give Up</LinkButton>
       </div>
     </section>
   );

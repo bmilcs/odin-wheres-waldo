@@ -1,7 +1,7 @@
 import CharacterIcon from "../../../../components/character-icon/CharacterIcon";
 import uniqid from "uniqid";
 import "./LevelCard.scss";
-import PlayLevelButton from "../play-level-button/PlayLevelButton";
+import LinkButton from "../../../../components/link-button/LinkButton";
 import { LevelObject } from "../../../../data/levelData";
 
 function LevelCard({
@@ -23,7 +23,7 @@ function LevelCard({
             <CharacterIcon name={name} key={uniqid()} />
           ))}
         </div>
-        <PlayLevelButton url={`/level/${id}`}>Play Now</PlayLevelButton>
+        <LinkButton url={`/level/${id}`}>Play Now</LinkButton>
       </div>
     </article>
   );

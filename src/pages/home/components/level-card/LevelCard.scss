@@ -13,6 +13,13 @@
     gap: 1.5rem;
 
     padding: 1.75rem;
+
+    a,
+    a:visited,
+    a:active,
+    a:hover {
+      display: grid;
+    }
   }
 
   &__name {
