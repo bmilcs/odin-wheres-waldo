@@ -3,11 +3,11 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /{document=**} {
       // LIVE: 
-      // allow read: if true;
-      // deny write: if true;
+      allow read: if true;
+      deny write: if true;
 
-      // EMULATION: required for emulating databqase
-      allow read, write: if true;
+      // // EMULATION: required for emulating databqase
+      // allow read, write: if true;
     }
   }
 }

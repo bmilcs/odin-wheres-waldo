@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import {
   getFunctions,
   httpsCallable,
-  connectFunctionsEmulator,
+  // connectFunctionsEmulator,
 } from "firebase/functions";
 
 const firebaseConfig = {
@@ -21,7 +21,7 @@ const functions = getFunctions(app);
 
 // LOCAL TEST VERSION:
 
-connectFunctionsEmulator(functions, "localhost", 5001);
+// connectFunctionsEmulator(functions, "localhost", 5001);
 
 export const validateCharacterPosition = httpsCallable(
   functions,
