@@ -13,7 +13,10 @@ export interface LevelState {
       coordinates: number[][];
     };
   };
-  timer: number;
+  timer: {
+    value: number;
+    enabled: boolean;
+  };
   clickedCoordinates: Array<number>;
 }
 
@@ -30,7 +33,10 @@ const initialState: LevelState = {
       count: 0,
     },
   },
-  timer: 0,
+  timer: {
+    value: 0,
+    enabled: false,
+  },
   clickedCoordinates: [0, 0],
 };
 
@@ -67,17 +73,40 @@ export const levelSlice = createSlice({
       state.characters.remaining.count =
         state.characters.remaining.names.length;
     },
+    resetLevel: (state) => {
+      state.characters.found.names = [];
+      state.timer.value = 0;
+      state.timer.enabled = false;
+      updateCharacterCounts();
+    },
+    startTimer: (state) => {
+      state.timer.enabled = true;
+    },
+    stopTimer: (state) => {
+      state.timer.enabled = false;
+    },
+    incrementTimer: (state) => {
+      state.timer.value += 1;
+    },
+    gameOver: (state) => {
+      state.timer.enabled = false;
+    },
   },
 });
 
 export const {
-  setLevelID,
   addCharacter,
-  setClickedCoordinates,
-  moveCharacterToFoundArray,
-  clearCoordinates,
-  updateCharacterCounts,
   addCoordinatesToFoundArray,
+  clearCoordinates,
+  moveCharacterToFoundArray,
+  resetLevel,
+  setClickedCoordinates,
+  setLevelID,
+  updateCharacterCounts,
+  startTimer,
+  stopTimer,
+  gameOver,
+  incrementTimer,
 } = levelSlice.actions;
 
 export default levelSlice.reducer;

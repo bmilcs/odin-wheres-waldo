@@ -1,7 +1,7 @@
 .gameplay {
   position: relative;
   object-fit: cover;
-  margin: 1rem auto;
+  user-select: none;
 
   &__zoom {
     position: absolute;
