@@ -2,7 +2,7 @@
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "tsc --watch",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "db": "firebase emulators:start --import db/",
     "emulate": "firebase emulators:start",
