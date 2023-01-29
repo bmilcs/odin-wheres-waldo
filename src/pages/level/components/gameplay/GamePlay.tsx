@@ -1,49 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import levelSlice, {
-  setCharacterSelection,
+import { useDispatch } from "react-redux";
+import {
+  clearCoordinates,
+  isCharacterFound,
   setClickedCoordinates,
 } from "../../../../features/level/levelSlice";
-import { validateCharacterPosition } from "../../../../firebase/firebase";
-import {
-  CharacterObject,
-  getCharacterDetails,
-} from "../../../../data/characterData";
+import { CharacterObject } from "../../../../data/characterData";
 import "./GamePlay.scss";
 import useToggle from "../../../../hooks/useToggle";
-import { LevelObject } from "../../../../data/levelData";
 
 // zoom image source: Anxiny article on dev.to
 // https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
 
 interface Props {
+  id: string;
   image: string;
-  validatePosition(characterName: string | null, coordinates: number[]): void;
+  // validatePosition(characterName: string | null, coordinates: number[]): void;
   characterData: Array<CharacterObject | undefined>;
 }
 
-function GamePlay({ validatePosition, image, characterData }: Props) {
+function GamePlay({ id, image, characterData }: Props) {
   const dispatch = useDispatch();
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
   const [isMagnifierOpen, , showMagnifier, hideMagnifier] = useToggle(false);
-  const [[imgWidth, imgHeight], setImageSize] = useState([0, 0]);
   const [isMenuOpen, , showMenu, hideMenu] = useToggle(false);
+  const [[imgWidth, imgHeight], setImageSize] = useState([0, 0]);
   const magnifierHeight = 100;
   const magnifierWidth = 100;
   const zoomLevel = 2;
 
-  const getCoordinatesInPercentages = (): number[] => {
-    return [
-      Number(((magnifierX / imgWidth) * 100).toFixed(3)),
-      Number(((magnifierY / imgHeight) * 100).toFixed(3)),
-    ];
-  };
-
   const handleImageClick = (e: React.MouseEvent): void => {
     if (isMenuOpen) {
       hideMenu();
-      dispatch(setClickedCoordinates(null));
+      dispatch(clearCoordinates());
       updateMagnifierPosition(e);
       return;
     }
@@ -56,10 +46,9 @@ function GamePlay({ validatePosition, image, characterData }: Props) {
   const handleCharacterSelection = (e: React.MouseEvent): void => {
     const icon = e.target as HTMLElement;
     const characterName = icon.getAttribute("data-character");
-    dispatch(setCharacterSelection(characterName));
+    dispatch(isCharacterFound(characterName));
     hideMenu();
     setDisableMagnifier(true);
-    validatePosition(characterName, getCoordinatesInPercentages());
   };
 
   const handleMouseEnter = (e: React.MouseEvent): void => {
@@ -89,6 +78,13 @@ function GamePlay({ validatePosition, image, characterData }: Props) {
     const magX = e.pageX - left - window.pageXOffset;
     const magY = e.pageY - top - window.pageYOffset;
     setMagnifierXY([magX, magY]);
+  };
+
+  const getCoordinatesInPercentages = (): number[] => {
+    return [
+      Number(((magnifierX / imgWidth) * 100).toFixed(3)),
+      Number(((magnifierY / imgHeight) * 100).toFixed(3)),
+    ];
   };
 
   return (

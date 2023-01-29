@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { validateCharacterPosition } from "../../firebase/firebase";
 
 interface LevelState {
   id: string | null;
@@ -14,7 +15,12 @@ interface LevelState {
   };
   timer: number;
   clickedCoordinates: Array<number> | null;
-  selectedCharacter: string | null;
+}
+
+interface ValidateCharacterPositionResults {
+  isFound: boolean;
+  characterName: string;
+  levelID: string;
 }
 
 const initialState: LevelState = {
@@ -31,7 +37,6 @@ const initialState: LevelState = {
   },
   timer: 0,
   clickedCoordinates: null,
-  selectedCharacter: null,
 };
 
 export const levelSlice = createSlice({
@@ -45,17 +50,34 @@ export const levelSlice = createSlice({
       state.characters.remaining.names = payload;
       state.characters.remaining.count = payload.length;
     },
-    setCharacterSelection: (state, { payload }) => {
-      state.selectedCharacter = payload;
+    isCharacterFound: (state, { payload }) => {
+      validateCharacterPosition({
+        characterName: payload,
+        coordinates: state.clickedCoordinates,
+        levelID: state.id,
+      })
+        .then((res) => {
+          const data = res.data as ValidateCharacterPositionResults;
+          const isFound = data.isFound as boolean;
+          const character = data.characterName;
+
+          if (isFound) {
+            const newRemainingCharacters =
+              state.characters.remaining.names.filter(
+                (name) => name !== character
+              );
+            state.characters.remaining.names = newRemainingCharacters;
+          }
+          console.log("isFound", isFound);
+          console.log("character", character);
+        })
+        .catch((e) => console.log(e));
     },
     setClickedCoordinates: (state, { payload }) => {
       state.clickedCoordinates = payload;
     },
     clearCoordinates: (state) => {
       state.clickedCoordinates = null;
-    },
-    clearSelectedCharacter: (state) => {
-      state.selectedCharacter = null;
     },
   },
 });
@@ -64,9 +86,8 @@ export const {
   setLevelID,
   addCharacter,
   setClickedCoordinates,
-  setCharacterSelection,
+  isCharacterFound,
   clearCoordinates,
-  clearSelectedCharacter,
 } = levelSlice.actions;
 
 export default levelSlice.reducer;

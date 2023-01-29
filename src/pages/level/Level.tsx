@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { CHARACTER_DATA } from "../../data/characterData";
 import { LevelObject } from "../../data/levelData";
 import { addCharacter, setLevelID } from "../../features/level/levelSlice";
-import { validateCharacterPosition } from "../../firebase/firebase";
 import GamePlay from "./components/gameplay/GamePlay";
 import LevelHeader from "./components/level-header/LevelHeader";
 import "./Level.scss";
@@ -15,22 +14,6 @@ function Level(props: LevelObject) {
     return CHARACTER_DATA.find((char) => char.name === name);
   });
 
-  const validatePosition = (
-    characterName: string,
-    coordinates: number[]
-  ): void => {
-    validateCharacterPosition({
-      level: id,
-      character: characterName,
-      coordinates: coordinates,
-    })
-      .then((res) => {
-        console.log(res);
-        return res;
-      })
-      .catch((err) => console.log("error!", err));
-  };
-
   // on first render, initialize state values in level slice
   // with level data passed in from props
   useEffect(() => {
@@ -41,11 +24,7 @@ function Level(props: LevelObject) {
   return (
     <>
       <LevelHeader />
-      <GamePlay
-        validatePosition={validatePosition}
-        image={fullSize}
-        characterData={characterData}
-      />
+      <GamePlay id={id} image={fullSize} characterData={characterData} />
     </>
   );
 }

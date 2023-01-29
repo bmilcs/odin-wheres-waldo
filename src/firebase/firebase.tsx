@@ -1,5 +1,9 @@
 import { initializeApp } from "firebase/app";
-import { getFunctions, httpsCallable } from "firebase/functions";
+import {
+  getFunctions,
+  httpsCallable,
+  connectFunctionsEmulator,
+} from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyABzNK-oeIQdF0ZrqZGxca9avUGzMNUXmw",
@@ -10,8 +14,14 @@ const firebaseConfig = {
   appId: "1:128540815863:web:b6ef8fb372fd0d5d7fbef2",
 };
 
+// LIVE VERSION:
+
 const app = initializeApp(firebaseConfig);
 const functions = getFunctions(app);
+
+// LOCAL TEST VERSION:
+
+connectFunctionsEmulator(functions, "localhost", 5001);
 
 export const validateCharacterPosition = httpsCallable(
   functions,
