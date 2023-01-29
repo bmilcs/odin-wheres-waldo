@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { validateCharacterPosition } from "../../firebase/firebase";
 
-interface LevelState {
-  id: string | null;
+export interface LevelState {
+  id: string;
   characters: {
     remaining: {
       names: Array<string>;
@@ -14,17 +13,11 @@ interface LevelState {
     };
   };
   timer: number;
-  clickedCoordinates: Array<number> | null;
-}
-
-interface ValidateCharacterPositionResults {
-  isFound: boolean;
-  characterName: string;
-  levelID: string;
+  clickedCoordinates: Array<number>;
 }
 
 const initialState: LevelState = {
-  id: null,
+  id: "",
   characters: {
     remaining: {
       names: [],
@@ -36,7 +29,7 @@ const initialState: LevelState = {
     },
   },
   timer: 0,
-  clickedCoordinates: null,
+  clickedCoordinates: [0, 0],
 };
 
 export const levelSlice = createSlice({
@@ -50,34 +43,24 @@ export const levelSlice = createSlice({
       state.characters.remaining.names = payload;
       state.characters.remaining.count = payload.length;
     },
-    isCharacterFound: (state, { payload }) => {
-      validateCharacterPosition({
-        characterName: payload,
-        coordinates: state.clickedCoordinates,
-        levelID: state.id,
-      })
-        .then((res) => {
-          const data = res.data as ValidateCharacterPositionResults;
-          const isFound = data.isFound as boolean;
-          const character = data.characterName;
-
-          if (isFound) {
-            const newRemainingCharacters =
-              state.characters.remaining.names.filter(
-                (name) => name !== character
-              );
-            state.characters.remaining.names = newRemainingCharacters;
-          }
-          console.log("isFound", isFound);
-          console.log("character", character);
-        })
-        .catch((e) => console.log(e));
+    moveCharacterToFoundArray: (state, { payload }) => {
+      const character = payload;
+      // remove character from remaining names
+      state.characters.remaining.names =
+        state.characters.remaining.names.filter((name) => name !== character);
+      // add it to found names
+      state.characters.found.names.push(character);
     },
     setClickedCoordinates: (state, { payload }) => {
       state.clickedCoordinates = payload;
     },
     clearCoordinates: (state) => {
-      state.clickedCoordinates = null;
+      state.clickedCoordinates = [0, 0];
+    },
+    updateCharacterCounts: (state) => {
+      state.characters.found.count = state.characters.found.names.length;
+      state.characters.remaining.count =
+        state.characters.remaining.names.length;
     },
   },
 });
@@ -86,8 +69,9 @@ export const {
   setLevelID,
   addCharacter,
   setClickedCoordinates,
-  isCharacterFound,
+  moveCharacterToFoundArray,
   clearCoordinates,
+  updateCharacterCounts,
 } = levelSlice.actions;
 
 export default levelSlice.reducer;

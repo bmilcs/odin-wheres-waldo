@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
   clearCoordinates,
-  isCharacterFound,
+  LevelState,
   setClickedCoordinates,
+  moveCharacterToFoundArray,
+  updateCharacterCounts,
 } from "../../../../features/level/levelSlice";
 import { CharacterObject } from "../../../../data/characterData";
 import "./GamePlay.scss";
 import useToggle from "../../../../hooks/useToggle";
+import { validateCharacterPosition } from "../../../../firebase/firebase";
+import { useSelector } from "react-redux";
 
 // zoom image source: Anxiny article on dev.to
 // https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
@@ -15,12 +19,23 @@ import useToggle from "../../../../hooks/useToggle";
 interface Props {
   id: string;
   image: string;
-  // validatePosition(characterName: string | null, coordinates: number[]): void;
   characterData: Array<CharacterObject | undefined>;
 }
 
-function GamePlay({ id, image, characterData }: Props) {
+interface ValidateCharacterPositionResults {
+  isFound: boolean;
+  characterName: string;
+  levelID: string;
+}
+
+const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const dispatch = useDispatch();
+  const coordinates = useSelector(
+    (state: { levels: LevelState }) => state.levels.clickedCoordinates
+  );
+  const foundCharacters = useSelector(
+    (state: { levels: LevelState }) => state.levels.characters.found.names
+  );
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
   const [isMagnifierOpen, , showMagnifier, hideMagnifier] = useToggle(false);
@@ -29,6 +44,26 @@ function GamePlay({ id, image, characterData }: Props) {
   const magnifierHeight = 100;
   const magnifierWidth = 100;
   const zoomLevel = 2;
+
+  const isCharacterFound = (characterName: string) => {
+    // firebase cloud function:
+    validateCharacterPosition({
+      characterName: characterName,
+      coordinates: coordinates,
+      levelID: id,
+    })
+      .then((res) => {
+        const data = res.data as ValidateCharacterPositionResults;
+        const isFound = data.isFound as boolean;
+        const character = data.characterName as string;
+        if (!character) return;
+        if (isFound) {
+          dispatch(moveCharacterToFoundArray(character));
+          dispatch(updateCharacterCounts());
+        }
+      })
+      .catch((e) => console.log(e));
+  };
 
   const handleImageClick = (e: React.MouseEvent): void => {
     if (isMenuOpen) {
@@ -46,9 +81,10 @@ function GamePlay({ id, image, characterData }: Props) {
   const handleCharacterSelection = (e: React.MouseEvent): void => {
     const icon = e.target as HTMLElement;
     const characterName = icon.getAttribute("data-character");
-    dispatch(isCharacterFound(characterName));
     hideMenu();
+    if (!characterName) return;
     setDisableMagnifier(true);
+    isCharacterFound(characterName);
   };
 
   const handleMouseEnter = (e: React.MouseEvent): void => {
@@ -135,27 +171,34 @@ function GamePlay({ id, image, characterData }: Props) {
             left: `${magnifierX + magnifierWidth / 2}px`,
           }}
         >
-          {characterData.map((character) => {
-            if (character && character.icon && character.name)
-              return (
-                <div
-                  className="menu__character"
-                  key={character.name}
-                  data-character={character.name}
-                >
-                  <img
-                    src={character.icon}
-                    alt={character.name}
-                    className="menu__icon"
-                  />
-                  <h5 className="menu__name">{character.name}</h5>
-                </div>
-              );
-          })}
+          {characterData
+            // remove found characters from the drop down menu
+            .filter((character) => {
+              if (character && character.name)
+                return !foundCharacters.includes(character.name);
+            })
+            // create character select options in drop down menu
+            .map((character) => {
+              if (character && character.icon && character.name)
+                return (
+                  <div
+                    className="menu__character"
+                    key={character.name}
+                    data-character={character.name}
+                  >
+                    <img
+                      src={character.icon}
+                      alt={character.name}
+                      className="menu__icon"
+                    />
+                    <h5 className="menu__name">{character.name}</h5>
+                  </div>
+                );
+            })}
         </div>
       )}
     </div>
   );
-}
+};
 
 export default GamePlay;

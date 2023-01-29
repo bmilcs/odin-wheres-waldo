@@ -19,6 +19,16 @@ Welcome to Bryan Miller's Where's Waldo Project, the [twenty secondth assignment
 
 In progress...
 
+### Problems Overcome
+
+- First time using TypeScript, Redux Tool Kit, Firebase Cloud Functions
+
+#### Redux Tool Kit: Asynchronous state updates
+
+As I stumbled my way through learning the Redux Tool Kit, my attempts to call the `validateCharacterPosition` Firebase Cloud Function within the levelSlice reducer kept throwing an error. My goal was to update `state.chracters.remaining` & `state.characters.found` objects based on the result of the function call.
+
+To get around this, I moved the async function call to the GamePlay React Component & handled the conditional logic there. If a character's found, it dispatches the `moveCharacterToFoundArray` reducer.
+
 ## Screenshots
 
 > Figma Assets
