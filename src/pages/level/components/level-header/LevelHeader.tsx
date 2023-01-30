@@ -1,8 +1,13 @@
 import "./LevelHeader.scss";
 import { useSelector } from "react-redux";
 import { CharacterObject } from "../../../../data/characterData";
-import { LevelState } from "../../../../features/level/levelSlice";
+import {
+  LevelState,
+  setHeaderHeight,
+} from "../../../../features/level/levelSlice";
 import LinkButton from "../../../../components/link-button/LinkButton";
+import { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 
 interface Props {
   characterData: Array<CharacterObject | undefined>;
@@ -10,16 +15,21 @@ interface Props {
 }
 
 function LevelHeader({ characterData, timer }: Props) {
+  const dispatch = useDispatch();
   const foundCharacters = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.found.names
   );
 
-  return (
-    <section className="header">
-      <div className="column">
-        {/* timer countdown */}
-        <div className="timer">{timer}</div>
+  const headerRef = useRef<any>();
 
+  useEffect(() => {
+    if (headerRef.current !== null)
+      dispatch(setHeaderHeight(headerRef.current.offsetHeight));
+  }, []);
+
+  return (
+    <section className="header" ref={headerRef}>
+      <div className="column">
         {/* character found status */}
         <div className="statuses">
           {characterData.map((character) => {
@@ -36,6 +46,9 @@ function LevelHeader({ characterData, timer }: Props) {
             );
           })}
         </div>
+
+        {/* timer countdown */}
+        <div className="timer">{timer}</div>
 
         {/* exit level button */}
         <LinkButton url="/">Give Up</LinkButton>

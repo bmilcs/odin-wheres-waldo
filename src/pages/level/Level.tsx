@@ -11,14 +11,16 @@ import {
   startTimer,
   incrementTimer,
   stopTimer,
+  gameOver,
 } from "../../features/level/levelSlice";
+import GameOverModal from "./components/gameover-modal/GameOverModal";
 import GamePlay from "./components/gameplay/GamePlay";
 import LevelHeader from "./components/level-header/LevelHeader";
 import "./Level.scss";
 
 function Level(props: LevelObject) {
   const dispatch = useDispatch();
-  const { characters, id, fullSize } = props;
+  const { characters, id, fullSize, name } = props;
   const timer = useSelector(
     (state: { levels: LevelState }) => state.levels.timer.value
   );
@@ -27,6 +29,9 @@ function Level(props: LevelObject) {
   );
   const remainingCharacterCount = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.remaining.count
+  );
+  const gameStatus = useSelector(
+    (state: { levels: LevelState }) => state.levels.status
   );
 
   // retrieve character objects from their name
@@ -57,17 +62,21 @@ function Level(props: LevelObject) {
     };
   }, [timerEnabled]);
 
-  // end game when remaining character count = 0
+  // on finding the final character, handle victory
   useEffect(() => {
     if (!timerEnabled || remainingCharacterCount !== 0) return;
-    // ! TODO: on victory, display modal w/ total time & restart/return to main menu
+    // all characters have been found
     dispatch(stopTimer());
+    dispatch(gameOver());
   }, [remainingCharacterCount, timerEnabled]);
 
   return (
     <>
       <LevelHeader characterData={characterData} timer={timer} />
       <GamePlay id={id} image={fullSize} characterData={characterData} />
+      {gameStatus === "complete" && (
+        <GameOverModal timer={timer} levelName={name} />
+      )}
     </>
   );
 }

@@ -17,6 +17,8 @@ export interface LevelState {
     value: number;
     enabled: boolean;
   };
+  headerHeightInPixels: number;
+  status: "active" | "complete";
   clickedCoordinates: Array<number>;
 }
 
@@ -37,6 +39,8 @@ const initialState: LevelState = {
     value: 0,
     enabled: false,
   },
+  headerHeightInPixels: 0,
+  status: "active",
   clickedCoordinates: [0, 0],
 };
 
@@ -46,6 +50,9 @@ export const levelSlice = createSlice({
   reducers: {
     setLevelID: (state, { payload }) => {
       state.id = payload;
+    },
+    setHeaderHeight: (state, { payload }) => {
+      state.headerHeightInPixels = payload;
     },
     addCharacter: (state, { payload }) => {
       state.characters.remaining.names = payload;
@@ -77,6 +84,7 @@ export const levelSlice = createSlice({
       state.characters.found.names = [];
       state.timer.value = 0;
       state.timer.enabled = false;
+      state.status = "active";
       updateCharacterCounts();
     },
     startTimer: (state) => {
@@ -89,7 +97,7 @@ export const levelSlice = createSlice({
       state.timer.value += 1;
     },
     gameOver: (state) => {
-      state.timer.enabled = false;
+      state.status = "complete";
     },
   },
 });
@@ -98,15 +106,16 @@ export const {
   addCharacter,
   addCoordinatesToFoundArray,
   clearCoordinates,
+  gameOver,
+  incrementTimer,
   moveCharacterToFoundArray,
   resetLevel,
   setClickedCoordinates,
+  setHeaderHeight,
   setLevelID,
-  updateCharacterCounts,
   startTimer,
   stopTimer,
-  gameOver,
-  incrementTimer,
+  updateCharacterCounts,
 } = levelSlice.actions;
 
 export default levelSlice.reducer;

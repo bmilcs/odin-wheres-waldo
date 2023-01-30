@@ -1,6 +1,11 @@
 .header {
+  position: sticky;
+  top: 0;
+  left: 0;
+
   background: var(--clr-primary-300);
   padding: 0.5rem;
+  border-bottom: 3px solid var(--clr-primary-400);
 
   .column {
     display: flex;

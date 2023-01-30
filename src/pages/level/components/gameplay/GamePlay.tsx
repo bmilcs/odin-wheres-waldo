@@ -40,6 +40,9 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const foundCharacterCoordinates = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.found.coordinates
   );
+  const headerHeight = useSelector(
+    (state: { levels: LevelState }) => state.levels.headerHeightInPixels
+  );
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
   const [isMagnifierOpen, , showMagnifier, hideMagnifier] = useToggle(false);
@@ -78,7 +81,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
       return;
     }
 
-    const coordinates = getCoordinatesInPercentages();
+    const coordinates = getCoordinatesInPercentages(magnifierX, magnifierY);
     dispatch(setClickedCoordinates(coordinates));
     showMenu();
   };
@@ -117,27 +120,30 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     const { top, left } = elem.getBoundingClientRect();
     // calculate cursor position on the image
     const magX = e.pageX - left - window.pageXOffset;
-    const magY = e.pageY - top - window.pageYOffset;
+    const magY = e.pageY - top - window.pageYOffset + headerHeight;
     setMagnifierXY([magX, magY]);
   };
 
-  const getCoordinatesInPercentages = (): number[] => {
+  const getCoordinatesInPercentages = (
+    xPos: number = magnifierX,
+    yPos: number = magnifierY
+  ): number[] => {
     return [
-      Number(((magnifierX / imgWidth) * 100).toFixed(3)),
-      Number(((magnifierY / imgHeight) * 100).toFixed(3)),
+      Number(((xPos / imgWidth) * 100).toFixed(3)),
+      Number((((yPos - headerHeight) / imgHeight) * 100).toFixed(3)),
     ];
   };
 
-  const getCoordinatesInPixels = (coordsInPercentage: number[]): number[] => {
-    const [percentX, percentY] = coordsInPercentage;
-    return [
-      Number(((percentX * imgWidth) / 100).toFixed(3)),
-      Number(((percentY * imgWidth) / 100).toFixed(3)),
-    ];
-  };
+  // const getCoordinatesInPixels = (coordsInPercentage: number[]): number[] => {
+  //   const [percentX, percentY] = coordsInPercentage;
+  //   return [
+  //     Number(((percentX * imgWidth) / 100).toFixed(3)),
+  //     Number(((percentY * imgWidth) / 100 - headerHeight).toFixed(3)),
+  //   ];
+  // };
 
   return (
-    <div className="gameplay">
+    <>
       {/* main level image */}
       <img
         src={image}
@@ -146,8 +152,8 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         onMouseLeave={() => handleMouseLeave()}
         onClick={(e) => handleImageClick(e)}
         alt={"Wheres Waldo Level"}
+        className="gameplay__img"
       />
-
       {/* magnifier */}
       {isMagnifierOpen && !disableMagnifier && (
         <div
@@ -168,12 +174,11 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
               -magnifierX * zoomLevel + magnifierWidth / 2
             }px`,
             backgroundPositionY: `${
-              -magnifierY * zoomLevel + magnifierHeight / 2
+              -magnifierY * zoomLevel + magnifierHeight / 2 + headerHeight * 2
             }px`,
           }}
         ></div>
       )}
-
       {/* character selection menu */}
       {isMenuOpen && (
         <div
@@ -215,12 +220,10 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
       {foundCharacterCoordinates &&
         foundCharacterCoordinates.map((coord) => {
           if (!coord) return null;
-          console.log(
-            "getCoordinatesInPixels(coord)",
-            getCoordinatesInPixels(coord)
-          );
           const [foundX, foundY] = getCoordinatesInPixels(coord);
-          console.log("imgWidth", imgWidth);
+          console.log("coord", coord);
+
+          // const [foundX, foundY] = getCoordinatesInPercentages(coord);
 
           return (
             <div
@@ -233,7 +236,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             ></div>
           );
         })} */}
-    </div>
+    </>
   );
 };
 
