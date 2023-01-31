@@ -1,8 +1,10 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import * as filter from "leo-profanity";
 
 // admin sdk to access firestore
 admin.initializeApp();
+const db = admin.firestore();
 
 export const validateCharacterPosition = functions.https.onCall(
   (data, context) => {
@@ -11,7 +13,6 @@ export const validateCharacterPosition = functions.https.onCall(
     const coordinates = data.coordinates;
     let isFound: boolean | null = null;
 
-    const db = admin.firestore();
     return db
       .collection("levels")
       .doc(levelID)
@@ -33,6 +34,22 @@ export const validateCharacterPosition = functions.https.onCall(
       });
   }
 );
+
+export const saveToLeaderboard = functions.https.onCall((data, context) => {
+  const levelID = data.levelID;
+  const entry = {
+    name: filter.clean(data.name),
+    time: data.time,
+  };
+  const fieldValue = admin.firestore.FieldValue;
+
+  console.log("entry", entry);
+  db.collection("levels")
+    .doc(levelID)
+    .update({
+      scores: fieldValue.arrayUnion(entry),
+    });
+});
 
 const isWithinCoordinateRange = (
   coordinates: number[],
