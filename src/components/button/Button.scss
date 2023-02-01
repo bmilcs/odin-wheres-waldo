@@ -1,13 +1,12 @@
 .button {
   border: 0;
-  border-radius: var(--border-radius-500);
-  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius-100);
+  padding: 0.5rem 1.25rem;
 
   color: var(--clr-neutral-100);
   background: var(--clr-primary-500);
 
   text-transform: uppercase;
-  letter-spacing: 2px;
   font-family: var(--ff-accent);
   font-weight: var(--fw-bold);
 
