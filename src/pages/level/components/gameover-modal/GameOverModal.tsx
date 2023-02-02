@@ -61,6 +61,7 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
             id="userName"
             autoFocus
             maxLength={16}
+            minLength={3}
             placeholder="nickname"
             className="form__input"
           />

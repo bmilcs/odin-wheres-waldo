@@ -52,7 +52,6 @@ function Level(props: LevelObject) {
   useEffect(() => {
     let timer: number | null = null;
     if (timerEnabled) {
-      console.log("enabling timer");
       timer = window.setInterval(() => dispatch(incrementTimer()), 1000);
     } else {
       if (timer) clearInterval(timer);
