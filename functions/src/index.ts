@@ -20,8 +20,11 @@ export const validateCharacterPosition = functions.https.onCall(
       .then((snapshot) => {
         const data = snapshot.data();
         if (data === undefined) throw new Error("Something went wrong!");
+
+        // retrieve hitbox coordinates from database: /levels/{leveName}/{characterName}
         const topLeft = data[characterName]["topLeft"];
         const bottomRight = data[characterName]["bottomRight"];
+
         isFound = isWithinCoordinateRange(coordinates, topLeft, bottomRight);
         return {
           levelID,
