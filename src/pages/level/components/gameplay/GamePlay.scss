@@ -3,15 +3,6 @@
   user-select: none;
   object-fit: cover;
 
-  &__wrapper {
-    height: 100%;
-    background: linear-gradient(
-      to right,
-      var(--clr-primary-200),
-      var(--clr-primary-300)
-    );
-  }
-
   &__img {
     min-width: 100%;
     border-bottom: 3px solid var(--clr-primary-400);

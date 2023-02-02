@@ -7,10 +7,16 @@
   border-radius: var(--border-radius-200);
   box-shadow: var(--box-shadow-100);
 
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2%);
+  }
+
   &__details {
     display: grid;
     grid-template-rows: min-content 1fr min-content min-content;
-    gap: 1.5rem;
+    gap: 2rem;
 
     padding: 1.75rem;
 

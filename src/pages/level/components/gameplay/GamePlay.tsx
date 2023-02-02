@@ -143,7 +143,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   // };
 
   return (
-    <div className="gameplay__wrapper">
+    <>
       {/* main level image */}
       <img
         src={image}
@@ -238,7 +238,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             ></div>
           );
         })} */}
-    </div>
+    </>
   );
 };
 

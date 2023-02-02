@@ -16,7 +16,7 @@
 
 .timer {
   font-family: var(--ff-accent);
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: bold;
   color: var(--clr-primary-800);
 }
@@ -31,6 +31,8 @@
     &__img {
       border-radius: var(--border-radius-200);
       border: 3px solid var(--clr-primary-400);
+      height: 60px;
+      aspect-ratio: 1/1;
     }
     .found {
       opacity: 0.35;
