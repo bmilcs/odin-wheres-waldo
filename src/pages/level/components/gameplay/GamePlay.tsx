@@ -143,7 +143,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   // };
 
   return (
-    <>
+    <div className="gameplay__wrapper">
       {/* main level image */}
       <img
         src={image}
@@ -154,6 +154,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         alt={"Wheres Waldo Level"}
         className="gameplay__img"
       />
+
       {/* magnifier */}
       {isMagnifierOpen && !disableMagnifier && (
         <div
@@ -179,6 +180,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
           }}
         ></div>
       )}
+
       {/* character selection menu */}
       {isMenuOpen && (
         <div
@@ -236,7 +238,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             ></div>
           );
         })} */}
-    </>
+    </div>
   );
 };
 
