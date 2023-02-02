@@ -43,7 +43,6 @@ export const saveToLeaderboard = functions.https.onCall((data, context) => {
   };
   const fieldValue = admin.firestore.FieldValue;
 
-  console.log("entry", entry);
   db.collection("levels")
     .doc(levelID)
     .update({

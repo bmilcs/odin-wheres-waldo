@@ -1,15 +1,16 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // LIVE SETTINGS
-    match /{document=**} {
+    match /levels/{levelName}/{document=**} {
       allow read: if true;
-      allow write: if isUserAuthenticated();
+      allow write: if request.resource.data.scores != null;
     }
-    // EMULATION: required for emulating databqase
+
+    // EMULATION: required for emulating database: won't load otherwise
     // match /{document=**} {
     //   allow read, write: if true;
     // }
+
     function isUserAuthenticated() {
       return request.auth.uid != null; 
     }
