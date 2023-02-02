@@ -75,7 +75,7 @@ function Level(props: LevelObject) {
       <LevelHeader characterData={characterData} timer={timer} />
       <GamePlay id={id} image={fullSize} characterData={characterData} />
       {gameStatus === "complete" && (
-        <GameOverModal timer={timer} levelName={name} />
+        <GameOverModal timer={timer} levelName={name} levelID={id} />
       )}
     </>
   );
