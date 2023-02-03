@@ -11,7 +11,7 @@ import { useDispatch } from "react-redux";
 
 interface Props {
   characterData: Array<CharacterObject | undefined>;
-  timer: number;
+  timer: string;
 }
 
 function LevelHeader({ characterData, timer }: Props) {

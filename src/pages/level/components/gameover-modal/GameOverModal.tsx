@@ -9,7 +9,7 @@ import {
 import "./GameOverModal.scss";
 
 interface Props {
-  timer: number;
+  timer: string;
   levelName: string;
   levelID: string;
 }

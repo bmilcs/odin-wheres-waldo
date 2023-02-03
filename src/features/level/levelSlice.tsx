@@ -15,6 +15,7 @@ export interface LevelState {
   };
   timer: {
     value: number;
+    formatted: string;
     enabled: boolean;
   };
   headerHeightInPixels: number;
@@ -37,6 +38,7 @@ const initialState: LevelState = {
   },
   timer: {
     value: 0,
+    formatted: "",
     enabled: false,
   },
   headerHeightInPixels: 0,
@@ -84,6 +86,7 @@ export const levelSlice = createSlice({
       state.characters.found.names = [];
       state.timer.value = 0;
       state.timer.enabled = false;
+      state.timer.formatted = "";
       state.status = "active";
       updateCharacterCounts();
     },
@@ -94,7 +97,21 @@ export const levelSlice = createSlice({
       state.timer.enabled = false;
     },
     incrementTimer: (state) => {
-      state.timer.value += 1;
+      const newTime = (state.timer.value += 1);
+
+      let sec: string, min: string;
+      if (newTime < 60) {
+        sec = newTime.toString().padStart(2, "0");
+        min = "00";
+      } else {
+        min = Math.floor(newTime / 60)
+          .toString()
+          .padStart(2, "0");
+        sec = (newTime % 60).toString();
+      }
+
+      state.timer.value = newTime;
+      state.timer.formatted = `${min}:${sec}`;
     },
     gameOver: (state) => {
       state.status = "complete";
