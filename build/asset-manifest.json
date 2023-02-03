@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/odin-wheres-waldo/static/css/main.8579cda1.css",
-    "main.js": "/odin-wheres-waldo/static/js/main.a9b130dd.js",
+    "main.css": "/odin-wheres-waldo/static/css/main.d143efe3.css",
+    "main.js": "/odin-wheres-waldo/static/js/main.5060cb7c.js",
     "static/media/space.jpg": "/odin-wheres-waldo/static/media/space.533099fbbae07273e851.jpg",
     "static/media/hollywood.jpg": "/odin-wheres-waldo/static/media/hollywood.297b7fe55c9aa8d76848.jpg",
     "static/media/slopes.jpg": "/odin-wheres-waldo/static/media/slopes.83a15ca6d694bdc6c0be.jpg",
@@ -13,11 +13,11 @@
     "static/media/wilma-full-size.png": "/odin-wheres-waldo/static/media/wilma-full-size.0910b31a49e405541e7d.png",
     "static/media/waldo-full-size.png": "/odin-wheres-waldo/static/media/waldo-full-size.9d5729af9394694ede9f.png",
     "index.html": "/odin-wheres-waldo/index.html",
-    "main.8579cda1.css.map": "/odin-wheres-waldo/static/css/main.8579cda1.css.map",
-    "main.a9b130dd.js.map": "/odin-wheres-waldo/static/js/main.a9b130dd.js.map"
+    "main.d143efe3.css.map": "/odin-wheres-waldo/static/css/main.d143efe3.css.map",
+    "main.5060cb7c.js.map": "/odin-wheres-waldo/static/js/main.5060cb7c.js.map"
   },
   "entrypoints": [
-    "static/css/main.8579cda1.css",
-    "static/js/main.a9b130dd.js"
+    "static/css/main.d143efe3.css",
+    "static/js/main.5060cb7c.js"
   ]
 }
