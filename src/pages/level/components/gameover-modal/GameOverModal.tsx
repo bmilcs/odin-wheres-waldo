@@ -43,48 +43,50 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
 
   return (
     <div className="gameover">
-      <div className="gameover__header">
-        <h2 className="gameover__title">Victory!</h2>
-        <p className="gameover__para">
-          Congratulations. You completed {levelName} in {timer} seconds!
-        </p>
+      <div className="gameover__modal">
+        <div className="gameover__header">
+          <h2 className="gameover__title">Victory!</h2>
+          <p className="gameover__para">
+            You completed {levelName} in {timer}!
+          </p>
+        </div>
+
+        <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
+          <fieldset className="form__fieldset" ref={fieldsetRef}>
+            <label htmlFor="userName" className="form__label">
+              save your score
+            </label>
+            <input
+              ref={userNameInputRef}
+              type="text"
+              id="userName"
+              autoFocus
+              maxLength={16}
+              minLength={3}
+              placeholder="nickname"
+              className="form__input"
+            />
+            <Button className="form__button">Submit</Button>
+          </fieldset>
+        </form>
+
+        <div className="leaderboard">
+          <h3 className="leaderboard__header">Top Scores</h3>
+          {leaderboard &&
+            leaderboard.map((entry) => {
+              const name = entry.name;
+              const time = entry.time;
+              return (
+                <div className="leaderboard__entry" key={`${name}-${time}`}>
+                  <p className="leaderboard__name">{name}</p>
+                  <p className="leaderboard__time">{time} sec</p>
+                </div>
+              );
+            })}
+        </div>
+
+        <LinkButton url="/">Return to Main Menu</LinkButton>
       </div>
-
-      <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
-        <fieldset className="form__fieldset" ref={fieldsetRef}>
-          <label htmlFor="userName" className="form__label">
-            save your score
-          </label>
-          <input
-            ref={userNameInputRef}
-            type="text"
-            id="userName"
-            autoFocus
-            maxLength={16}
-            minLength={3}
-            placeholder="nickname"
-            className="form__input"
-          />
-          <Button className="form__button">Submit</Button>
-        </fieldset>
-      </form>
-
-      <div className="leaderboard">
-        <h3 className="leaderboard__header">Top Scores</h3>
-        {leaderboard &&
-          leaderboard.map((entry) => {
-            const name = entry.name;
-            const time = entry.time;
-            return (
-              <div className="leaderboard__entry" key={`${name}-${time}`}>
-                <p className="leaderboard__name">{name}</p>
-                <p className="leaderboard__time">{time} sec</p>
-              </div>
-            );
-          })}
-      </div>
-
-      <LinkButton url="/">Return to Main Menu</LinkButton>
     </div>
   );
 }

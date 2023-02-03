@@ -1,19 +1,25 @@
 .gameover {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  inset: 0;
+  background: #00000099;
 
-  display: grid;
-  gap: 2rem;
+  &__modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-  padding: 2rem;
+    display: grid;
+    gap: 2rem;
 
-  background: var(--clr-primary-100);
-  border: 3px solid var(--clr-primary-300);
-  border-radius: var(--border-radius-200);
+    padding: 2rem;
 
-  text-align: center;
+    background: var(--clr-primary-100);
+    border: 3px solid var(--clr-primary-300);
+    border-radius: var(--border-radius-200);
+
+    text-align: center;
+  }
 
   &__header {
     display: grid;
