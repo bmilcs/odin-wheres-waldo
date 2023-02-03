@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   clearCoordinates,
   LevelState,
@@ -8,14 +8,10 @@ import {
   updateCharacterCounts,
   addCoordinatesToFoundArray,
 } from "../../../../features/level/levelSlice";
-import { CharacterObject } from "../../../../data/characterData";
-import "./GamePlay.scss";
 import useToggle from "../../../../hooks/useToggle";
+import { CharacterObject } from "../../../../data/characterData";
 import { validateCharacterPosition } from "../../../../firebase/firebase";
-import { useSelector } from "react-redux";
-
-// zoom image source: Anxiny article on dev.to
-// https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
+import "./GamePlay.scss";
 
 interface Props {
   id: string;
@@ -44,16 +40,16 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     (state: { levels: LevelState }) => state.levels.headerHeightInPixels
   );
   const [[magnifierX, magnifierY], setMagnifierXY] = useState([0, 0]);
+  const [[imgWidth, imgHeight], setImageSize] = useState([0, 0]);
   const [disableMagnifier, setDisableMagnifier] = useState(false);
   const [isMagnifierOpen, , showMagnifier, hideMagnifier] = useToggle(false);
   const [isMenuOpen, , showMenu, hideMenu] = useToggle(false);
-  const [[imgWidth, imgHeight], setImageSize] = useState([0, 0]);
   const magnifierHeight = 100;
   const magnifierWidth = 100;
   const zoomLevel = 2;
 
   const isCharacterFound = (characterName: string) => {
-    // firebase cloud function:
+    // firebase cloud function
     validateCharacterPosition({
       characterName: characterName,
       coordinates: coordinates,
@@ -95,9 +91,10 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     isCharacterFound(characterName);
   };
 
+  // update image size and turn-on magnifier when mouse hovers over
+  // the main image
   const handleMouseEnter = (e: React.MouseEvent): void => {
     if (isMenuOpen) return;
-    // update image size and turn-on magnifier
     const elem = e.target as HTMLElement;
     const { width, height } = elem.getBoundingClientRect();
     setImageSize([width, height]);
@@ -118,9 +115,16 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const updateMagnifierPosition = (e: React.MouseEvent): void => {
     const elem = e.currentTarget;
     const { top, left } = elem.getBoundingClientRect();
+
     // calculate cursor position on the image
     const magX = e.pageX - left - window.pageXOffset;
     const magY = e.pageY - top - window.pageYOffset + headerHeight;
+
+    // prevent magnifier from extending beyond image boundaries
+    // on the right side only (causes scrollbar to rapidly
+    // appear and disappear
+    if (imgWidth - magX < magnifierWidth / 2) return;
+
     setMagnifierXY([magX, magY]);
   };
 
@@ -134,14 +138,6 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     ];
   };
 
-  // const getCoordinatesInPixels = (coordsInPercentage: number[]): number[] => {
-  //   const [percentX, percentY] = coordsInPercentage;
-  //   return [
-  //     Number(((percentX * imgWidth) / 100).toFixed(3)),
-  //     Number(((percentY * imgWidth) / 100 - headerHeight).toFixed(3)),
-  //   ];
-  // };
-
   return (
     <>
       {/* main level image */}
@@ -154,7 +150,6 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         alt={"Wheres Waldo Level"}
         className="gameplay__img"
       />
-
       {/* magnifier */}
       {isMagnifierOpen && !disableMagnifier && (
         <div
@@ -180,7 +175,6 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
           }}
         ></div>
       )}
-
       {/* character selection menu */}
       {isMenuOpen && (
         <div
@@ -217,29 +211,11 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             })}
         </div>
       )}
-
-      {/* draw circles around found characters
-      {foundCharacterCoordinates &&
-        foundCharacterCoordinates.map((coord) => {
-          if (!coord) return null;
-          const [foundX, foundY] = getCoordinatesInPixels(coord);
-          console.log("coord", coord);
-
-          // const [foundX, foundY] = getCoordinatesInPercentages(coord);
-
-          return (
-            <div
-              key={foundX}
-              className="character__found"
-              style={{
-                top: `${foundY}px`,
-                left: `${foundX}px`,
-              }}
-            ></div>
-          );
-        })} */}
     </>
   );
 };
+
+// zoom image source: Anxiny article on dev.to
+// https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
 
 export default GamePlay;
