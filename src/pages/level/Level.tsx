@@ -1,6 +1,5 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { CHARACTER_DATA } from "../../data/characterData";
 import { LevelObject } from "../../data/levelData";
 import {
@@ -18,9 +17,8 @@ import GamePlay from "./components/gameplay/GamePlay";
 import LevelHeader from "./components/level-header/LevelHeader";
 import "./Level.scss";
 
-function Level(props: LevelObject) {
+function Level({ characters, id, fullSize, name }: LevelObject) {
   const dispatch = useDispatch();
-  const { characters, id, fullSize, name } = props;
   const time = useSelector(
     (state: { levels: LevelState }) => state.levels.timer.value
   );
@@ -48,7 +46,7 @@ function Level(props: LevelObject) {
     dispatch(startTimer());
   }, []);
 
-  // watch for timerEnabled state value changes & begin interval when set to true
+  // on timerEnabled changes, start or stop the timer
   useEffect(() => {
     let timer: number | null = null;
     if (timerEnabled) {
@@ -61,10 +59,10 @@ function Level(props: LevelObject) {
     };
   }, [timerEnabled]);
 
-  // on finding the final character, handle victory
+  // when the final character is found, handle victory
+  // gameOver() sets gameStatus to "complete" in levelSlice
   useEffect(() => {
     if (!timerEnabled || remainingCharacterCount !== 0) return;
-    // all characters have been found
     dispatch(stopTimer());
     dispatch(gameOver());
   }, [remainingCharacterCount, timerEnabled]);

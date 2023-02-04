@@ -33,9 +33,6 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const foundCharacters = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.found.names
   );
-  const foundCharacterCoordinates = useSelector(
-    (state: { levels: LevelState }) => state.levels.characters.found.coordinates
-  );
   const headerHeight = useSelector(
     (state: { levels: LevelState }) => state.levels.headerHeightInPixels
   );
@@ -150,6 +147,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         alt={"Wheres Waldo Level"}
         className="gameplay__img"
       />
+
       {/* magnifier */}
       {isMagnifierOpen && !disableMagnifier && (
         <div
@@ -175,6 +173,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
           }}
         ></div>
       )}
+
       {/* character selection menu */}
       {isMenuOpen && (
         <div

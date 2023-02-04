@@ -36,10 +36,4 @@ export const CHARACTER_DATA: Array<CharacterObject> = [
   },
 ];
 
-export const getCharacterDetails = (names: string[]) => {
-  return names.map((name) => {
-    return CHARACTER_DATA.find((character) => character.name === name);
-  });
-};
-
 export type { CharacterObject };
