@@ -18,6 +18,7 @@ interface Props {
 function GameOverModal({ timer, levelName, levelID }: Props) {
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const fieldsetRef = useRef<HTMLFieldSetElement>(null);
+  const [hasSubmittedScore, setHasSubmittedScore] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
 
   useEffect(() => {
@@ -27,7 +28,6 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
   const getLeaderboard = async () => {
     const scores = await getLeaderboardData(levelID);
     if (!scores) return;
-
     const topTenScores = scores.slice(0, 10);
     setLeaderboard(topTenScores);
   };
@@ -35,11 +35,13 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
   const onLeaderboardSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!userNameInputRef.current) return;
-
     const name = userNameInputRef.current.value;
-    fieldsetRef.current!.disabled = true;
-
-    saveToLeaderboard({ levelID: levelID, time: timer, name: name });
+    saveToLeaderboard({ levelID: levelID, time: timer, name: name }).then(
+      () => {
+        setHasSubmittedScore(true);
+        getLeaderboard();
+      }
+    );
   };
 
   return (
@@ -48,28 +50,30 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
         <div className="gameover__header">
           <h2 className="gameover__title">Victory!</h2>
           <p className="gameover__para">
-            You completed {levelName} in {timer}!
+            You completed {levelName} in {formatTime(timer)}!
           </p>
         </div>
 
-        <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
-          <fieldset className="form__fieldset" ref={fieldsetRef}>
-            <label htmlFor="userName" className="form__label">
-              save your score
-            </label>
-            <input
-              ref={userNameInputRef}
-              type="text"
-              id="userName"
-              autoFocus
-              maxLength={16}
-              minLength={3}
-              placeholder="nickname"
-              className="form__input"
-            />
-            <Button className="form__button">Submit</Button>
-          </fieldset>
-        </form>
+        {!hasSubmittedScore && (
+          <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
+            <fieldset className="form__fieldset" ref={fieldsetRef}>
+              <label htmlFor="userName" className="form__label">
+                save your score
+              </label>
+              <input
+                ref={userNameInputRef}
+                type="text"
+                id="userName"
+                autoFocus
+                maxLength={16}
+                minLength={3}
+                placeholder="nickname"
+                className="form__input"
+              />
+              <Button className="form__button">Submit</Button>
+            </fieldset>
+          </form>
+        )}
 
         <div className="leaderboard">
           <h3 className="leaderboard__header">Top Scores</h3>
