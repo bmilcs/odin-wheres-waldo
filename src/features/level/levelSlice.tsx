@@ -16,7 +16,6 @@ export interface LevelState {
   };
   timer: {
     value: number;
-    formatted: string;
     enabled: boolean;
   };
   headerHeightInPixels: number;
@@ -39,7 +38,6 @@ const initialState: LevelState = {
   },
   timer: {
     value: 0,
-    formatted: "",
     enabled: false,
   },
   headerHeightInPixels: 0,
@@ -63,14 +61,9 @@ export const levelSlice = createSlice({
     },
     moveCharacterToFoundArray: (state, { payload }) => {
       const character = payload;
-      // remove character from remaining names
       state.characters.remaining.names =
         state.characters.remaining.names.filter((name) => name !== character);
-      // add it to found names
       state.characters.found.names.push(character);
-    },
-    addCoordinatesToFoundArray: (state, { payload }) => {
-      state.characters.found.coordinates.push(payload);
     },
     setClickedCoordinates: (state, { payload }) => {
       state.clickedCoordinates = payload;
@@ -87,7 +80,6 @@ export const levelSlice = createSlice({
       state.characters.found.names = [];
       state.timer.value = 0;
       state.timer.enabled = false;
-      state.timer.formatted = "";
       state.status = "active";
       updateCharacterCounts();
     },
@@ -98,9 +90,7 @@ export const levelSlice = createSlice({
       state.timer.enabled = false;
     },
     incrementTimer: (state) => {
-      const newTime = (state.timer.value += 1);
-      state.timer.value = newTime;
-      state.timer.formatted = formatTime(newTime);
+      state.timer.value = state.timer.value += 1;
     },
     gameOver: (state) => {
       state.status = "complete";
@@ -110,7 +100,6 @@ export const levelSlice = createSlice({
 
 export const {
   addCharacter,
-  addCoordinatesToFoundArray,
   clearCoordinates,
   gameOver,
   incrementTimer,

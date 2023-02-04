@@ -1,8 +1,8 @@
-import CharacterIcon from "../../../../components/character-icon/CharacterIcon";
 import uniqid from "uniqid";
-import "./LevelCard.scss";
-import LinkButton from "../../../../components/link-button/LinkButton";
 import { LevelObject } from "../../../../data/levelData";
+import CharacterIcon from "../../../../components/character-icon/CharacterIcon";
+import LinkButton from "../../../../components/link-button/LinkButton";
+import "./LevelCard.scss";
 
 function LevelCard({
   name,

@@ -1,5 +1,5 @@
-import willmaIcon from "../assets/characters/wilma-icon.png";
-import willmaFullSize from "../assets/characters/wilma-full-size.png";
+import wilmaIcon from "../assets/characters/wilma-icon.png";
+import wilmaFullSize from "../assets/characters/wilma-full-size.png";
 import waldoIcon from "../assets/characters/waldo-icon.png";
 import waldoFullSize from "../assets/characters/waldo-full-size.png";
 import odlawIcon from "../assets/characters/odlaw-icon.png";
@@ -16,8 +16,8 @@ interface CharacterObject {
 export const CHARACTER_DATA: Array<CharacterObject> = [
   {
     name: "wilma",
-    icon: willmaIcon,
-    fullSize: willmaFullSize,
+    icon: wilmaIcon,
+    fullSize: wilmaFullSize,
   },
   {
     name: "waldo",

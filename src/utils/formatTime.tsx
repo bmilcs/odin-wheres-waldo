@@ -1,3 +1,4 @@
+// convert an integer number of seconds to "00:00" string format
 const formatTime = (time: number): string => {
   const min = Math.floor(time / 60)
     .toString()

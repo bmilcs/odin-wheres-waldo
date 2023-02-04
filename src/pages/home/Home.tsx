@@ -1,6 +1,5 @@
-import React from "react";
-import LevelCard from "./components/level-card/LevelCard";
 import { LEVEL_DATA } from "../../data/levelData";
+import LevelCard from "./components/level-card/LevelCard";
 import "./Home.scss";
 
 function Home() {

@@ -143,7 +143,7 @@ The asynchronous flow for displaying the leaderboard is as follows:
 - `useEffect()` displays the current state of the leaderboard on first render
 - On submission of the user's name, the form is hidden & `saveToLeaderboard` cloud functions called
 - On the backend, this cloud function filters out profanity, adds it to the database & returns an object: `{ added: boolean} `
-- On the frontend, the result is parsed. If `added` is `true`, the `getLeaderboard()` function is called, updating the local state variable `leaderboard`, causing a re-render that displays the user's score
+- On the frontend, the result is parsed. If `added` is `true`, the `getLeaderboardTopTen()` function is called, updating the local state variable `leaderboard`, causing a re-render that displays the user's score
 
 ### Problems Overcome
 
@@ -175,7 +175,7 @@ const updateMagnifierPosition = (e: React.MouseEvent): void => {
   const magY = e.pageY - top - window.pageYOffset + headerHeight;
 
   // prevent magnifier from extending beyond image boundaries
-  // on the right side only (causes scrollbar to rapidly
+  // on the right side only because it causes scrollbar to rapidly
   // appear and disappear
   if (imgWidth - magX < magnifierWidth / 2) return;
 

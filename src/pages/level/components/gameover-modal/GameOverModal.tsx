@@ -26,28 +26,25 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
 
   // get leaderboard on first render
   useEffect(() => {
-    getLeaderboard();
+    getLeaderboardTopTen();
   }, []);
 
-  const getLeaderboard = async () => {
+  const getLeaderboardTopTen = async () => {
     const scores = await getLeaderboardData(levelID);
     if (!scores) return;
     const topTenScores = scores.slice(0, 10);
     setLeaderboard(topTenScores);
   };
 
-  const onLeaderboardSubmit = (e: React.FormEvent) => {
+  const handleNameSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!userNameInputRef.current || !userNameInputRef.current.value) return;
     const name = userNameInputRef.current.value;
-
     setHasSubmittedScore(true);
-
     saveToLeaderboard({ levelID: levelID, time: timer, name: name }).then(
       (result) => {
         const data = result.data as LeaderboardResponse;
-        if (data.added) getLeaderboard();
+        if (data.added) getLeaderboardTopTen();
       }
     );
   };
@@ -63,7 +60,7 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
         </div>
 
         {!hasSubmittedScore && (
-          <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
+          <form className="form" onSubmit={(e) => handleNameSubmit(e)}>
             <label htmlFor="userName" className="form__label">
               save your score
             </label>
@@ -77,7 +74,7 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
               placeholder="nickname"
               className="form__input"
             />
-            <Button className="form__button">Submit</Button>
+            <Button>Submit</Button>
           </form>
         )}
 
@@ -88,7 +85,7 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
               const name = entry.name;
               const time = entry.time;
               return (
-                <div className="leaderboard__entry {}" key={`${name}-${time}`}>
+                <div className="leaderboard__entry" key={`${name}-${time}`}>
                   <p className="leaderboard__name">{name}</p>
                   <p className="leaderboard__time">{formatTime(time)}</p>
                 </div>

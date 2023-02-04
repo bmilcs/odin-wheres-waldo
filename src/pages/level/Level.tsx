@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CHARACTER_DATA } from "../../data/characterData";
 import { LevelObject } from "../../data/levelData";
+import GameOverModal from "./components/gameover-modal/GameOverModal";
+import GamePlay from "./components/gameplay/GamePlay";
+import LevelHeader from "./components/level-header/LevelHeader";
+import "./Level.scss";
 import {
   addCharacter,
   setLevelID,
@@ -12,10 +16,6 @@ import {
   stopTimer,
   gameOver,
 } from "../../features/level/levelSlice";
-import GameOverModal from "./components/gameover-modal/GameOverModal";
-import GamePlay from "./components/gameplay/GamePlay";
-import LevelHeader from "./components/level-header/LevelHeader";
-import "./Level.scss";
 
 function Level({ characters, id, fullSize, name }: LevelObject) {
   const dispatch = useDispatch();
@@ -32,13 +32,13 @@ function Level({ characters, id, fullSize, name }: LevelObject) {
     (state: { levels: LevelState }) => state.levels.status
   );
 
-  // retrieve character objects from their name
+  // retrieve character data from their name
   const characterData = characters.map((name) => {
     return CHARACTER_DATA.find((char) => char.name === name);
   });
 
   // on first render, initialize state values in level slice
-  // with level data passed in from props
+  // with data passed in from props (home)
   useEffect(() => {
     dispatch(setLevelID(id));
     dispatch(addCharacter(characters));

@@ -1,10 +1,10 @@
 import { initializeApp } from "firebase/app";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 import {
   getFunctions,
   httpsCallable,
   // connectFunctionsEmulator,
 } from "firebase/functions";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyABzNK-oeIQdF0ZrqZGxca9avUGzMNUXmw",
@@ -19,8 +19,7 @@ const app = initializeApp(firebaseConfig);
 const functions = getFunctions(app);
 const db = getFirestore(app);
 
-// LOCAL TEST VERSION:
-
+// FUNCTION EMULATION
 // connectFunctionsEmulator(functions, "localhost", 5001);
 
 // CLOUD FUNCTIONS
@@ -41,14 +40,12 @@ export interface LeaderboardEntry {
 
 export const getLeaderboardData = async (levelID: string) => {
   try {
+    // retrieve scores from db: "/levels/{levelName}/scores"
     const docRef = doc(db, "levels", levelID);
     const snapshot = await getDoc(docRef);
     const data = await snapshot.data();
-
     if (!data || !data.scores) return;
-
     const scores: LeaderboardEntry[] = data.scores;
-
     return scores.sort((a, b) => {
       return a.time > b.time ? 1 : -1;
     });

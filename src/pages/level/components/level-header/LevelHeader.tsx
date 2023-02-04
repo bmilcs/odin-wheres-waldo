@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { CharacterObject } from "../../../../data/characterData";
+import LinkButton from "../../../../components/link-button/LinkButton";
+import formatTime from "../../../../utils/formatTime";
+import "./LevelHeader.scss";
 import {
   LevelState,
   setHeaderHeight,
 } from "../../../../features/level/levelSlice";
-import LinkButton from "../../../../components/link-button/LinkButton";
-import "./LevelHeader.scss";
-import formatTime from "../../../../utils/formatTime";
 
 interface Props {
   characterData: Array<CharacterObject | undefined>;
@@ -19,9 +19,9 @@ function LevelHeader({ characterData, timer }: Props) {
   const foundCharacters = useSelector(
     (state: { levels: LevelState }) => state.levels.characters.found.names
   );
-
   const headerRef = useRef<any>();
 
+  // update header height: used to offset position magnifier to account for sticky header
   useEffect(() => {
     if (headerRef.current !== null)
       dispatch(setHeaderHeight(headerRef.current.offsetHeight));
@@ -38,6 +38,7 @@ function LevelHeader({ characterData, timer }: Props) {
             return (
               <div className="character" key={character.name}>
                 <img
+                  // .found class lowers opacity to notify user
                   className={`${isFound ? "found" : ""} character__img`}
                   src={character.icon}
                   alt={`${character.name} Status`}

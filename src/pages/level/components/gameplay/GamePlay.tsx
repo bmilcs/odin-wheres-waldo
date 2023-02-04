@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { CharacterObject } from "../../../../data/characterData";
+import { validateCharacterPosition } from "../../../../firebase/firebase";
+import useToggle from "../../../../hooks/useToggle";
+import "./GamePlay.scss";
 import {
   clearCoordinates,
   LevelState,
   setClickedCoordinates,
   moveCharacterToFoundArray,
   updateCharacterCounts,
-  addCoordinatesToFoundArray,
 } from "../../../../features/level/levelSlice";
-import useToggle from "../../../../hooks/useToggle";
-import { CharacterObject } from "../../../../data/characterData";
-import { validateCharacterPosition } from "../../../../firebase/firebase";
-import "./GamePlay.scss";
 
 interface Props {
   id: string;
@@ -45,6 +44,29 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
   const magnifierWidth = 100;
   const zoomLevel = 2;
 
+  const handleImageClick = (e: React.MouseEvent): void => {
+    // user clicks somewhere else on the image & cancels the open menu (instead of selecting a character)
+    if (isMenuOpen) {
+      hideMenu();
+      dispatch(clearCoordinates());
+      updateMagnifierPosition(e);
+      return;
+    }
+    // user opens the menu at a given spot in the image
+    const coordinates = getCoordinatesInPercentages(magnifierX, magnifierY);
+    dispatch(setClickedCoordinates(coordinates));
+    showMenu();
+  };
+
+  const handleCharacterSelection = (e: React.MouseEvent): void => {
+    const icon = e.target as HTMLElement;
+    const characterName = icon.getAttribute("data-character");
+    hideMenu();
+    if (!characterName) return;
+    setDisableMagnifier(true);
+    isCharacterFound(characterName);
+  };
+
   const isCharacterFound = (characterName: string) => {
     // firebase cloud function
     validateCharacterPosition({
@@ -60,36 +82,12 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         if (isFound) {
           dispatch(moveCharacterToFoundArray(character));
           dispatch(updateCharacterCounts());
-          dispatch(addCoordinatesToFoundArray(coordinates));
         }
       })
       .catch((e) => console.log(e));
   };
 
-  const handleImageClick = (e: React.MouseEvent): void => {
-    if (isMenuOpen) {
-      hideMenu();
-      dispatch(clearCoordinates());
-      updateMagnifierPosition(e);
-      return;
-    }
-
-    const coordinates = getCoordinatesInPercentages(magnifierX, magnifierY);
-    dispatch(setClickedCoordinates(coordinates));
-    showMenu();
-  };
-
-  const handleCharacterSelection = (e: React.MouseEvent): void => {
-    const icon = e.target as HTMLElement;
-    const characterName = icon.getAttribute("data-character");
-    hideMenu();
-    if (!characterName) return;
-    setDisableMagnifier(true);
-    isCharacterFound(characterName);
-  };
-
-  // update image size and turn-on magnifier when mouse hovers over
-  // the main image
+  // on main image mouse over, update image size & show the magnifier
   const handleMouseEnter = (e: React.MouseEvent): void => {
     if (isMenuOpen) return;
     const elem = e.target as HTMLElement;
@@ -104,6 +102,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     setDisableMagnifier(false);
   };
 
+  // on moving the mouse outside of the main image
   const handleMouseLeave = (): void => {
     if (isMenuOpen) return;
     hideMagnifier();
@@ -118,13 +117,15 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     const magY = e.pageY - top - window.pageYOffset + headerHeight;
 
     // prevent magnifier from extending beyond image boundaries
-    // on the right side only (causes scrollbar to rapidly
+    // on the right side only because it causes scrollbar to rapidly
     // appear and disappear
     if (imgWidth - magX < magnifierWidth / 2) return;
 
     setMagnifierXY([magX, magY]);
   };
 
+  // converts pixel coordinates to percentage coordinates
+  // based off of the main image size
   const getCoordinatesInPercentages = (
     xPos: number = magnifierX,
     yPos: number = magnifierY
@@ -156,14 +157,14 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
             backgroundImage: `url('${image}')`,
             height: `${magnifierHeight}px`,
             width: `${magnifierWidth}px`,
-            // move element center to cursor pos
+            // move the center of the element to cursor position
             top: `${magnifierY - magnifierHeight / 2}px`,
             left: `${magnifierX - magnifierWidth / 2}px`,
-            // zoomed image size
+            // set the size of the zoomed image
             backgroundSize: `${imgWidth * zoomLevel}px ${
               imgHeight * zoomLevel
             }px`,
-            // zoom image position:
+            // position the zoomed image within the magnifier div
             backgroundPositionX: `${
               -magnifierX * zoomLevel + magnifierWidth / 2
             }px`,
@@ -179,6 +180,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
         <div
           className="menu"
           onClick={(e) => handleCharacterSelection(e)}
+          // position menu to the right of the magnifier
           style={{
             top: `${magnifierY - magnifierHeight / 2}px`,
             left: `${magnifierX + magnifierWidth / 2}px`,
@@ -190,7 +192,7 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
               if (character && character.name)
                 return !foundCharacters.includes(character.name);
             })
-            // create character select options in drop down menu
+            // create character selection options in drop down menu
             .map((character) => {
               if (character && character.icon && character.name)
                 return (
@@ -213,8 +215,5 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     </>
   );
 };
-
-// zoom image source: Anxiny article on dev.to
-// https://dev.to/anxiny/create-an-image-magnifier-with-react-3fd7
 
 export default GamePlay;
