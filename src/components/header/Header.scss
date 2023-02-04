@@ -11,26 +11,25 @@ header {
     display: grid;
     align-items: center;
     justify-content: space-between;
-
-    grid-template-columns: max-content min-content;
+    grid-template-columns: max-content max-content;
   }
 }
 
-.title__container {
+.title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
 
-.title__text {
-  font-family: var(--ff-accent);
-  font-weight: var(--fw-bold);
-  font-size: 1.75rem;
-}
+  .title__text {
+    font-family: var(--ff-accent);
+    font-weight: var(--fw-bold);
+    font-size: 1.75rem;
+  }
 
-.title__img {
-  aspect-ratio: 1/1;
-  height: 40px;
-  border-radius: 100%;
-  box-shadow: var(--box-shadow-100);
+  .title__img {
+    aspect-ratio: 1/1;
+    height: 40px;
+    border-radius: 100%;
+    box-shadow: var(--box-shadow-100);
+  }
 }
