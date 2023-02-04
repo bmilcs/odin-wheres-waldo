@@ -1,17 +1,17 @@
-import "./LevelHeader.scss";
-import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { CharacterObject } from "../../../../data/characterData";
 import {
   LevelState,
   setHeaderHeight,
 } from "../../../../features/level/levelSlice";
 import LinkButton from "../../../../components/link-button/LinkButton";
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import "./LevelHeader.scss";
+import formatTime from "../../../../utils/formatTime";
 
 interface Props {
   characterData: Array<CharacterObject | undefined>;
-  timer: string;
+  timer: number;
 }
 
 function LevelHeader({ characterData, timer }: Props) {
@@ -48,7 +48,7 @@ function LevelHeader({ characterData, timer }: Props) {
         </div>
 
         {/* timer countdown */}
-        <div className="timer">{timer}</div>
+        <div className="timer">{formatTime(timer)}</div>
 
         {/* exit level button */}
         <LinkButton url="/">Give Up</LinkButton>

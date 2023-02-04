@@ -21,8 +21,8 @@ import "./Level.scss";
 function Level(props: LevelObject) {
   const dispatch = useDispatch();
   const { characters, id, fullSize, name } = props;
-  const formattedTime = useSelector(
-    (state: { levels: LevelState }) => state.levels.timer.formatted
+  const time = useSelector(
+    (state: { levels: LevelState }) => state.levels.timer.value
   );
   const timerEnabled = useSelector(
     (state: { levels: LevelState }) => state.levels.timer.enabled
@@ -71,10 +71,10 @@ function Level(props: LevelObject) {
 
   return (
     <>
-      <LevelHeader characterData={characterData} timer={formattedTime} />
+      <LevelHeader characterData={characterData} timer={time} />
       <GamePlay id={id} image={fullSize} characterData={characterData} />
       {gameStatus === "complete" && (
-        <GameOverModal timer={formattedTime} levelName={name} levelID={id} />
+        <GameOverModal timer={time} levelName={name} levelID={id} />
       )}
     </>
   );

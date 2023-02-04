@@ -6,10 +6,11 @@ import {
   saveToLeaderboard,
   LeaderboardEntry,
 } from "../../../../firebase/firebase";
+import formatTime from "../../../../utils/formatTime";
 import "./GameOverModal.scss";
 
 interface Props {
-  timer: string;
+  timer: number;
   levelName: string;
   levelID: string;
 }
@@ -77,9 +78,9 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
               const name = entry.name;
               const time = entry.time;
               return (
-                <div className="leaderboard__entry" key={`${name}-${time}`}>
+                <div className="leaderboard__entry {}" key={`${name}-${time}`}>
                   <p className="leaderboard__name">{name}</p>
-                  <p className="leaderboard__time">{time} sec</p>
+                  <p className="leaderboard__time">{formatTime(time)}</p>
                 </div>
               );
             })}

@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import formatTime from "../../utils/formatTime";
 
 export interface LevelState {
   id: string;
@@ -98,20 +99,8 @@ export const levelSlice = createSlice({
     },
     incrementTimer: (state) => {
       const newTime = (state.timer.value += 1);
-
-      let sec: string, min: string;
-      if (newTime < 60) {
-        sec = newTime.toString().padStart(2, "0");
-        min = "00";
-      } else {
-        min = Math.floor(newTime / 60)
-          .toString()
-          .padStart(2, "0");
-        sec = (newTime % 60).toString();
-      }
-
       state.timer.value = newTime;
-      state.timer.formatted = `${min}:${sec}`;
+      state.timer.formatted = formatTime(newTime);
     },
     gameOver: (state) => {
       state.status = "complete";
