@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "../../../../components/button/Button";
 import LinkButton from "../../../../components/link-button/LinkButton";
+import formatTime from "../../../../utils/formatTime";
 import {
   getLeaderboardData,
   saveToLeaderboard,
   LeaderboardEntry,
 } from "../../../../firebase/firebase";
-import formatTime from "../../../../utils/formatTime";
 import "./GameOverModal.scss";
 
 interface Props {
@@ -15,15 +15,19 @@ interface Props {
   levelID: string;
 }
 
+interface LeaderboardResponse {
+  added: boolean;
+}
+
 function GameOverModal({ timer, levelName, levelID }: Props) {
   const userNameInputRef = useRef<HTMLInputElement>(null);
-  const fieldsetRef = useRef<HTMLFieldSetElement>(null);
-  const [hasSubmittedScore, setHasSubmittedScore] = useState(false);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [hasSubmittedScore, setHasSubmittedScore] = useState(false);
 
+  // get leaderboard on first render
   useEffect(() => {
     getLeaderboard();
-  }, [leaderboard]);
+  }, []);
 
   const getLeaderboard = async () => {
     const scores = await getLeaderboardData(levelID);
@@ -34,12 +38,16 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
 
   const onLeaderboardSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!userNameInputRef.current) return;
+
+    if (!userNameInputRef.current || !userNameInputRef.current.value) return;
     const name = userNameInputRef.current.value;
+
+    setHasSubmittedScore(true);
+
     saveToLeaderboard({ levelID: levelID, time: timer, name: name }).then(
-      () => {
-        setHasSubmittedScore(true);
-        getLeaderboard();
+      (result) => {
+        const data = result.data as LeaderboardResponse;
+        if (data.added) getLeaderboard();
       }
     );
   };
@@ -56,22 +64,20 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
 
         {!hasSubmittedScore && (
           <form className="form" onSubmit={(e) => onLeaderboardSubmit(e)}>
-            <fieldset className="form__fieldset" ref={fieldsetRef}>
-              <label htmlFor="userName" className="form__label">
-                save your score
-              </label>
-              <input
-                ref={userNameInputRef}
-                type="text"
-                id="userName"
-                autoFocus
-                maxLength={16}
-                minLength={3}
-                placeholder="nickname"
-                className="form__input"
-              />
-              <Button className="form__button">Submit</Button>
-            </fieldset>
+            <label htmlFor="userName" className="form__label">
+              save your score
+            </label>
+            <input
+              ref={userNameInputRef}
+              type="text"
+              id="userName"
+              autoFocus
+              maxLength={16}
+              minLength={3}
+              placeholder="nickname"
+              className="form__input"
+            />
+            <Button className="form__button">Submit</Button>
           </form>
         )}
 
