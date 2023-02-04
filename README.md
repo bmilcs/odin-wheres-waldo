@@ -14,6 +14,11 @@ Welcome to Bryan Miller's Where's Waldo Project, the [twenty secondth assignment
 - SASS
   - BEM naming convention
 
+## Links
+
+- [Live Demo](https://bmilcs.com/odin-wheres-waldo)
+- [My Odin Project Progress](https://github.com/bmilcs/odin-project)
+
 ## Summary
 
 Wow. This was a fun project. As simple as this game may seem, it included a LOT of new and unfamiliar technologies that I had to learn on the fly.
@@ -221,11 +226,6 @@ Despite my desire to keep going with this project, I cut it short despite wantin
 ![Andes Slopes](src/assets/levels/slopes-solution.png)
 ![Hollywood](src/ass/../assets/levels/hollywood-solution.png)
 ![Moon](src/assets/levels/space-solution.png)
-
-## Links
-
-- [Live Demo](https://bmilcs.com/odin-wheres-waldo)
-- [My Odin Project Progress](https://github.com/bmilcs/odin-project)
 
 ## Deployment
 
