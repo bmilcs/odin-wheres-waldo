@@ -194,6 +194,17 @@ Firestore cloud function emulation was achieved with a simple one-liner: `connec
 
 ![Figma Where's Waldo Assets](./screenshots/figma-assets.png)
 
+> Home
+
+![Homepage](./screenshots/home.png)
+
+> Gameplay
+
+![Gameplay #1](./screenshots/gameplay-1.png)
+![Gameplay #2](./screenshots/gameplay-2.png)
+![Gameplay #3](./screenshots/gameplay-3.png)
+![Gameplay #4](./screenshots/gameplay-4.png)
+
 ## Links
 
 - [Live Demo](https://bmilcs.com/odin-wheres-waldo)
