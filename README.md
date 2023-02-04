@@ -122,12 +122,13 @@ const isCharacterFound = (characterName: string) => {
       if (isFound) {
         dispatch(moveCharacterToFoundArray(character));
         dispatch(updateCharacterCounts());
-        dispatch(addCoordinatesToFoundArray(coordinates));
       }
     })
     .catch((e) => console.log(e));
 };
 ```
+
+> Database Screenshot
 
 ![Firestore Layout](./screenshots/firestore.png)
 
@@ -150,13 +151,13 @@ This project was my first look at TypeScript, Redux Tool Kit, Firebase Cloud Fun
 
 #### Redux Tool Kit: Asynchronous state updates
 
-As I stumbled my way through learning the Redux Tool Kit, my attempts to call the `validateCharacterPosition` Firebase Cloud Function within the levelSlice reducer kept throwing an error. My goal was to update `state.characters.remaining` & `state.characters.found` objects based on the result of the function call.
+As I stumbled my way through learning the Redux Tool Kit, my attempts to call the `validateCharacterPosition` Firebase Cloud Function within the levelSlice reducer kept throwing an error. It wouldn't allow me to update state within a `.then()`. My goal was to update `state.characters.remaining` & `state.characters.found` objects based on the result of the function call.
 
 To get around this, I moved the async function call to the GamePlay React Component & handled the conditional logic there. If a character's found, it dispatches the `moveCharacterToFoundArray` reducer.
 
 #### Sticky Level Header: Broke the Magnifier
 
-By adding a sticky header for each level, the calculations for displaying the magnifier broke. To get around this, I setup a state variable in the `levelSlice` called `headerHeightInPixels`. When the `LevelHeader` is rendered, I dispatch a reducer to set this value and inside `GamePlay`, I had to adjust the calculations to reposition the zoomed image & it's position.
+By adding a sticky header for each level, the calculations for displaying the magnifier broke. To get around this, I setup a state variable in the `levelSlice` called `headerHeightInPixels`. When the `LevelHeader` is rendered, I dispatch a reducer to set this value and inside `GamePlay`, I had to adjust the calculations to reposition the zoomed image.
 
 #### Glitchy Magnifier: Scrollbar Toggling Spam
 
@@ -188,6 +189,16 @@ While developing this project, deploying changes to the firebase functions on ev
 
 Firestore cloud function emulation was achieved with a simple one-liner: `connectFunctionsEmulator(functions, "localhost", 5001);`
 
+#### Time Limitations
+
+Despite my desire to keep going with this project, I cut it short despite wanting to fine tune every last detail. Some features I would've liked to have implement include:
+
+- Drawing circles around previously found characters
+- Larger gameplay images with automatic scrolling when the user hovers near the edge of the page
+- Leaderboard pages or leaderboard displays on the homepage
+- More levels
+- Better overall design & responsiveness
+
 ## Screenshots
 
 > Figma Assets
@@ -204,6 +215,12 @@ Firestore cloud function emulation was achieved with a simple one-liner: `connec
 ![Gameplay #2](./screenshots/gameplay-2.png)
 ![Gameplay #3](./screenshots/gameplay-3.png)
 ![Gameplay #4](./screenshots/gameplay-4.png)
+
+> Solutions for testing purposes
+
+![Andes Slopes](src/assets/levels/slopes-solution.png)
+![Hollywood](src/ass/../assets/levels/hollywood-solution.png)
+![Moon](src/assets/levels/space-solution.png)
 
 ## Links
 
