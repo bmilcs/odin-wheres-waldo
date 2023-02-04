@@ -46,10 +46,17 @@ export const saveToLeaderboard = functions.https.onCall((data, context) => {
   };
   const fieldValue = admin.firestore.FieldValue;
 
-  db.collection("levels")
+  return db
+    .collection("levels")
     .doc(levelID)
     .update({
       scores: fieldValue.arrayUnion(entry),
+    })
+    .then(() => {
+      return { added: true };
+    })
+    .catch(() => {
+      return { added: false };
     });
 });
 
