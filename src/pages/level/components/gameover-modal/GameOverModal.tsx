@@ -23,6 +23,7 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
   const userNameInputRef = useRef<HTMLInputElement>(null);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [hasSubmittedScore, setHasSubmittedScore] = useState(false);
+  const [isSavingScore, setIsSavingScore] = useState(false);
 
   // get leaderboard on first render
   useEffect(() => {
@@ -41,10 +42,14 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
     if (!userNameInputRef.current || !userNameInputRef.current.value) return;
     const name = userNameInputRef.current.value;
     setHasSubmittedScore(true);
+    setIsSavingScore(true);
     saveToLeaderboard({ levelID: levelID, time: timer, name: name }).then(
       (result) => {
         const data = result.data as LeaderboardResponse;
-        if (data.added) getLeaderboardTopTen();
+        if (data.added) {
+          setIsSavingScore(false);
+          getLeaderboardTopTen();
+        }
       }
     );
   };
@@ -77,6 +82,8 @@ function GameOverModal({ timer, levelName, levelID }: Props) {
             <Button>Submit</Button>
           </form>
         )}
+
+        {isSavingScore && <p className="saving__score">Saving score...</p>}
 
         <div className="leaderboard">
           <h3 className="leaderboard__header">Top Scores</h3>
