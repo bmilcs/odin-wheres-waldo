@@ -168,7 +168,9 @@ By adding a sticky header for each level, the calculations for displaying the ma
 
 When hovering the mouse to the far right side of the screen, the overflowing magnifier element would cause the scrollbar to flash on and off repeatedly. This resulted in an unpolished UI/UX.
 
-To get around this, I modified the calculations for displaying the magnifier based on the location of the mouse, magnifier width & image width in pixels (vs. percentages used to validate character position).
+To get around this, I modified the calculations for displaying the magnifier based on the location of the mouse, magnifier & image size in pixels (vs. percentages used to validate character position).
+
+**Update**: After having users test the project, blocking the magnifier on the right side only left them confused and thinking this was a bug. To get around this, I updated the effect to occur on all four sides of the image.
 
 ```tsx
 const updateMagnifierPosition = (e: React.MouseEvent): void => {
@@ -179,10 +181,19 @@ const updateMagnifierPosition = (e: React.MouseEvent): void => {
   const magX = e.pageX - left - window.pageXOffset;
   const magY = e.pageY - top - window.pageYOffset + headerHeight;
 
-  // prevent magnifier from extending beyond image boundaries
-  // on the right side only because it causes scrollbar to rapidly
-  // appear and disappear
+  // prevent the magnifier from extending beyond the border of the image
+  // on all sides for consistency. why? scrolling beyond the right side
+  // causes the scrollbar to rapidly appear and disappear. the effect
+  // is replicated across all borders to prevent user confusion.
+
+  // right
   if (imgWidth - magX < magnifierWidth / 2) return;
+  // left
+  if (magX < magnifierWidth / 2) return;
+  // top
+  if (magY - headerHeight < magnifierWidth / 2) return;
+  // bottom
+  if (imgHeight + headerHeight - magY < magnifierWidth / 2) return;
 
   setMagnifierXY([magX, magY]);
 };

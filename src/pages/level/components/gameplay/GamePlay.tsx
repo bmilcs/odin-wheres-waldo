@@ -116,10 +116,19 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     const magX = e.pageX - left - window.pageXOffset;
     const magY = e.pageY - top - window.pageYOffset + headerHeight;
 
-    // prevent magnifier from extending beyond image boundaries
-    // on the right side only because it causes scrollbar to rapidly
-    // appear and disappear
+    // prevent the magnifier from extending beyond the border of the image
+    // on all sides for consistency. why? scrolling beyond the right side
+    // causes the scrollbar to rapidly appear and disappear. the effect
+    // is replicated across all borders to prevent user confusion.
+
+    // right
     if (imgWidth - magX < magnifierWidth / 2) return;
+    // left
+    if (magX < magnifierWidth / 2) return;
+    // top
+    if (magY - headerHeight < magnifierWidth / 2) return;
+    // bottom
+    if (imgHeight + headerHeight - magY < magnifierWidth / 2) return;
 
     setMagnifierXY([magX, magY]);
   };
