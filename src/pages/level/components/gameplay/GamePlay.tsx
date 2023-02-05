@@ -121,15 +121,25 @@ const GamePlay: React.FC<Props> = ({ id, image, characterData }) => {
     // causes the scrollbar to rapidly appear and disappear. the effect
     // is replicated across all borders to prevent user confusion.
 
-    // right
-    if (imgWidth - magX < magnifierWidth / 2) return;
-    // left
-    if (magX < magnifierWidth / 2) return;
-    // top
-    if (magY - headerHeight < magnifierWidth / 2) return;
-    // bottom
-    if (imgHeight + headerHeight - magY < magnifierWidth / 2) return;
+    const isMouseBeyondLeftBorder = magX < magnifierWidth / 2;
+    const isMouseBeyondRightBorder = imgWidth - magX < magnifierWidth / 2;
+    const isMouseBeyondTopBorder = magY - headerHeight < magnifierWidth / 2;
+    const isMouseBeyondBottomBorder =
+      imgHeight + headerHeight - magY < magnifierWidth / 2;
 
+    // left/right: allow up/down movement only
+    if (isMouseBeyondRightBorder || isMouseBeyondLeftBorder) {
+      setMagnifierXY([magnifierX, magY]);
+      return;
+    }
+
+    // top/bottom: allow left/right movement only
+    if (isMouseBeyondTopBorder || isMouseBeyondBottomBorder) {
+      setMagnifierXY([magX, magnifierY]);
+      return;
+    }
+
+    // cursor is within the image boundaries
     setMagnifierXY([magX, magY]);
   };
 

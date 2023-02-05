@@ -170,7 +170,9 @@ When hovering the mouse to the far right side of the screen, the overflowing mag
 
 To get around this, I modified the calculations for displaying the magnifier based on the location of the mouse, magnifier & image size in pixels (vs. percentages used to validate character position).
 
-**Update**: After having users test the project, blocking the magnifier on the right side only left them confused and thinking this was a bug. To get around this, I updated the effect to occur on all four sides of the image.
+**Update #1**: After having users test the project, blocking the magnifier on the right side only left them confused and thinking this was a bug. To get around this, I updated the effect to occur on all four sides of the image.
+
+**Update #2**: I took it a step further. Instead of blocking all movement of the magnifier when the cursor extends too far, the magnifier is allowed to move along the opposite axis of the blocked axis. (ie: if cursor is beyond top border, it can move left/right only)
 
 ```tsx
 const updateMagnifierPosition = (e: React.MouseEvent): void => {
@@ -186,15 +188,25 @@ const updateMagnifierPosition = (e: React.MouseEvent): void => {
   // causes the scrollbar to rapidly appear and disappear. the effect
   // is replicated across all borders to prevent user confusion.
 
-  // right
-  if (imgWidth - magX < magnifierWidth / 2) return;
-  // left
-  if (magX < magnifierWidth / 2) return;
-  // top
-  if (magY - headerHeight < magnifierWidth / 2) return;
-  // bottom
-  if (imgHeight + headerHeight - magY < magnifierWidth / 2) return;
+  const isMouseBeyondLeftBorder = magX < magnifierWidth / 2;
+  const isMouseBeyondRightBorder = imgWidth - magX < magnifierWidth / 2;
+  const isMouseBeyondTopBorder = magY - headerHeight < magnifierWidth / 2;
+  const isMouseBeyondBottomBorder =
+    imgHeight + headerHeight - magY < magnifierWidth / 2;
 
+  // left/right: allow up/down movement only
+  if (isMouseBeyondRightBorder || isMouseBeyondLeftBorder) {
+    setMagnifierXY([magnifierX, magY]);
+    return;
+  }
+
+  // top/bottom: allow left/right movement only
+  if (isMouseBeyondTopBorder || isMouseBeyondBottomBorder) {
+    setMagnifierXY([magX, magnifierY]);
+    return;
+  }
+
+  // cursor is within the image boundaries
   setMagnifierXY([magX, magY]);
 };
 ```
